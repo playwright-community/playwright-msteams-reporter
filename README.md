@@ -50,16 +50,16 @@ export default defineConfig({
 
 The reporter supports the following configuration options:
 
-| Option | Description | Required | Default |
-| --- | --- | --- | --- |
-| `webhookUrl` | The Microsoft Teams webhook URL | `true` | `undefined` |
-| `title` | The notification title | `false` | `Playwright Test Results` |
-| `linkToResultsUrl` | Link to the test results | `false` | `undefined` |
-| `linkToResultsText` | Text for the link to the test results | `false` | `View test results` |
-| `notifyOnSuccess` | Notify on success | `false` | `true` |
-| `mentionOnFailure` | Mention users on failure | `false` | `[]` |
-| `mentionOnFailureText` | Text to mention users on failure | `false` | `{mentions} please validate the test results.` |
-| `quiet` | Do not show any output in the console  | `false` | `false` |
+| Option | Description | Type | Required | Default |
+| --- | --- | --- | --- | --- |
+| `webhookUrl` | The Microsoft Teams webhook URL | `boolean` | `true` | `undefined` |
+| `title` | The notification title | `string` | `false` | `Playwright Test Results` |
+| `linkToResultsUrl` | Link to the test results | `string` | `false` | `undefined` |
+| `linkToResultsText` | Text for the link to the test results | `string` | `false` | `View test results` |
+| `notifyOnSuccess` | Notify on success | `boolean` | `false` | `true` |
+| `mentionOnFailure` | Mention users on failure (comma separated list) | `string` | `false` | `undefined` |
+| `mentionOnFailureText` | Text to mention users on failure | `string` | `false` | `{mentions} please validate the test results.` |
+| `quiet` | Do not show any output in the console | `boolean` | `false` | `false` |
 
 ### Mention users
 
@@ -69,8 +69,19 @@ The format can be either the full name and email (`"Full name <email>"`) or just
 
 ```javascript
 {
-  mentionOnFailure: ["Elio Struyf <mail@elio.dev>", "mail@elio.dev"],
+  mentionOnFailure: "Elio Struyf <mail@elio.dev>,mail@elio.dev",
   mentionOnFailureText: "{mentions} check those failed tests!"
+}
+```
+
+### Link to the results
+
+With the `linkToResultsUrl` option, you can provide a link to the test results. You can for instance use this to view the test results on your CI/CD platform.
+
+```javascript
+{
+  // The link to your GitHub Actions workflow run
+  linkToResultsUrl: `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`,
 }
 ```
 
