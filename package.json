@@ -1,0 +1,39 @@
+{
+  "name": "playwright-msteams-reporter",
+  "version": "0.0.1",
+  "description": "Microsoft Teams reporter for Playwright which allows you to send notifications about the status of your E2E tests.",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "NODE_ENV=development npx playwright test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/estruyf/playwright-msteams-reporter.git"
+  },
+  "keywords": [
+    "playwright",
+    "msteams",
+    "Microsoft",
+    "Teams",
+    "e2e",
+    "testing"
+  ],
+  "author": "Elio Struyf <elio@struyfconsulting.be>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/estruyf/playwright-msteams-reporter/issues"
+  },
+  "homepage": "https://github.com/estruyf/playwright-msteams-reporter#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.45.0",
+    "@tsconfig/recommended": "^1.0.7",
+    "@types/node": "^20.14.9",
+    "dotenv": "^16.4.5",
+    "typescript": "^5.5.2"
+  },
+  "peerDependencies": {
+    "@playwright/test": "^1.45.0"
+  }
+}
