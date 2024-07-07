@@ -20,6 +20,7 @@ const config: PlaywrightTestConfig<{}, {}> = {
       {
         webhookUrl: process.env.TEAMS_WEBHOOK_URL,
         notifyOnSuccess: false,
+        debug: true,
       },
     ],
     [
@@ -31,6 +32,7 @@ const config: PlaywrightTestConfig<{}, {}> = {
         linkToResultsText: "View results",
         mentionOnFailure: "Elio <elio@struyfconsulting.be>, mail@elio.dev",
         mentionOnFailureText: "",
+        debug: true,
       },
     ],
   ],

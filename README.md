@@ -60,6 +60,7 @@ The reporter supports the following configuration options:
 | `mentionOnFailure` | Mention users on failure (comma separated list) | `string` | `false` | `undefined` |
 | `mentionOnFailureText` | Text to mention users on failure | `string` | `false` | `{mentions} please validate the test results.` |
 | `quiet` | Do not show any output in the console | `boolean` | `false` | `false` |
+| `debug` | Show debug information | `boolean` | `false` | `false` |
 
 ### Mention users
 
