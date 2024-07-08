@@ -1,5 +1,6 @@
 .github
 assets
+coverage
 node_modules
 src
 test-results
@@ -7,3 +8,4 @@ tests
 
 playwright.config.ts
 tsconfig.json
+jest.config.js

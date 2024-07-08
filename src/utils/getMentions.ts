@@ -16,23 +16,26 @@ export const getMentions = (
     return;
   }
 
-  const mentions = mentionOnFailure.split(",").map((mention) => {
-    mention = mention.trim();
+  const mentions = mentionOnFailure
+    .split(",")
+    .filter((m) => m.trim() !== "")
+    .map((mention) => {
+      mention = mention.trim();
 
-    // Mention can be just an "email" or "full name <email>"
-    if (!mention.includes("<")) {
-      return {
-        name: mention,
-        email: mention,
-      };
-    } else {
-      const parts = mention.split("<");
-      return {
-        name: parts[0].trim(),
-        email: parts[1].replace(">", "").trim(),
-      };
-    }
-  });
+      // Mention can be just an "email" or "full name <email>"
+      if (!mention.includes("<")) {
+        return {
+          name: mention,
+          email: mention,
+        };
+      } else {
+        const parts = mention.split("<");
+        return {
+          name: parts[0].trim(),
+          email: parts[1].replace(">", "").trim(),
+        };
+      }
+    });
 
   if (mentions.length > 0) {
     const mentionsText = mentions

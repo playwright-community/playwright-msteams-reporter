@@ -5,6 +5,7 @@ import {
   createTableRow,
   getMentions,
   getTotalStatus,
+  validateWebhookUrl,
 } from "./utils";
 import { Table } from "./models";
 import { Images } from "./constants";
@@ -26,6 +27,11 @@ export const processResults = async (
 ) => {
   if (!options.webhookUrl) {
     console.error("No webhook URL provided");
+    return;
+  }
+
+  if (!validateWebhookUrl(options.webhookUrl)) {
+    console.error("Invalid webhook URL");
     return;
   }
 
