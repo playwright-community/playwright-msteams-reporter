@@ -133,12 +133,8 @@ export const processResults = async (
     });
   }
 
-  const response = await fetch(options.webhookUrl, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
+  const body = JSON.stringify(
+    {
       type: "message",
       attachments: [
         {
@@ -147,7 +143,22 @@ export const processResults = async (
           content: adaptiveCard,
         },
       ],
-    }),
+    },
+    null,
+    2
+  );
+
+  if (options.debug) {
+    console.log("Sending the following message:");
+    console.log(body);
+  }
+
+  const response = await fetch(options.webhookUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body,
   });
 
   if (response.ok) {

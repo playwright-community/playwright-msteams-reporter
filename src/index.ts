@@ -17,6 +17,7 @@ export interface MsTeamsReporterOptions {
   mentionOnFailure?: string;
   mentionOnFailureText?: string;
   quiet?: boolean;
+  debug?: boolean;
 }
 
 export default class MsTeamsReporter implements Reporter {
@@ -32,13 +33,14 @@ export default class MsTeamsReporter implements Reporter {
       mentionOnFailure: undefined,
       mentionOnFailureText: "{mentions} please validate the test results.",
       quiet: false,
+      debug: false,
     };
 
     this.options = { ...defaultOptions, ...options };
 
     console.log(`Using Microsoft Teams reporter`);
 
-    if (process.env.NODE_ENV === "development") {
+    if (process.env.NODE_ENV === "development" || this.options.debug) {
       console.log(`Using development mode`);
       console.log(`Options: ${JSON.stringify(this.options, null, 2)}`);
     }
