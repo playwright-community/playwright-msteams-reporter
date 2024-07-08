@@ -30,7 +30,7 @@ export const processResults = async (
     return;
   }
 
-  if (!validateWebhookUrl(options.webhookUrl)) {
+  if (!validateWebhookUrl(options.webhookUrl, options.webhookType)) {
     console.error("Invalid webhook URL");
     return;
   }
@@ -131,6 +131,10 @@ export const processResults = async (
       title: options.linkToResultsText,
       url: options.linkToResultsUrl,
     });
+  }
+
+  if (options.webhookType === "powerautomate") {
+    adaptiveCard.version = "1.4";
   }
 
   const body = JSON.stringify(

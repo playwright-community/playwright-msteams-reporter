@@ -18,23 +18,27 @@ const config: PlaywrightTestConfig<{}, {}> = {
     [
       "./src/index.ts",
       {
-        webhookUrl: process.env.TEAMS_WEBHOOK_URL,
-        notifyOnSuccess: false,
-        debug: true,
-      },
-    ],
-    [
-      "./src/index.ts",
-      {
-        webhookUrl: process.env.TEAMS_WEBHOOK_URL,
-        subject: "E2E Test Results",
+        webhookUrl: process.env.FLOW_WEBHOOK_URL,
+        webhookType: "powerautomate",
         linkToResultsUrl: "https://eliostruyf.com",
         linkToResultsText: "View results",
-        mentionOnFailure: "Elio <elio@struyfconsulting.be>, mail@elio.dev",
-        mentionOnFailureText: "",
+        mentionOnFailure: "elio@struyfconsulting.be", // When using Power Automate, you only need to provide the email address
+        notifyOnSuccess: true,
         debug: true,
       },
     ],
+    // [
+    //   "./src/index.ts",
+    //   {
+    //     webhookUrl: process.env.TEAMS_WEBHOOK_URL,
+    //     subject: "E2E Test Results",
+    //     linkToResultsUrl: "https://eliostruyf.com",
+    //     linkToResultsText: "View results",
+    //     mentionOnFailure: "Elio <elio@struyfconsulting.be>, mail@elio.dev",
+    //     mentionOnFailureText: "",
+    //     debug: true,
+    //   },
+    // ],
   ],
   use: {
     actionTimeout: 0,

@@ -2,12 +2,6 @@
 
 This is a Microsoft Teams reporter for Playwright. It allows you to send the test results to a Microsoft Teams channel and mention users on failure.
 
-## Prerequisites
-
-To make use of this reporter, you need to create a incoming webhook for your Microsoft Teams channel. You can find more information on how to do this in the [Microsoft documentation](https://learn.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook?tabs=newteams%2Cdotnet#create-an-incoming-webhook).
-
-> **Info**: You need to copy the `webhook URL` from the configuration as you will need it to configure the reporter.
-
 Here you can see an example card for successful test results:
 
 ![Microsoft Teams card for successful test results](./assets/success.png)
@@ -15,6 +9,34 @@ Here you can see an example card for successful test results:
 And here you can see an example card for failed test results:
 
 ![Microsoft Teams card for failed test results](./assets/failure.png)
+
+## Prerequisites
+
+### Microsoft Teams incoming webhook (retiring October 1, 2024)
+
+To make use of this reporter, you need to create a incoming webhook for your Microsoft Teams channel. You can find more information on how to do this in the [Microsoft documentation](https://learn.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook?tabs=newteams%2Cdotnet#create-an-incoming-webhook).
+
+> **Info**: You need to copy the `webhook URL` from the configuration as you will need it to configure the reporter.
+
+### Microsoft Teams Power Automate connector
+
+As the incoming webhook functionality will stop working on October 1, 2024, you can already make use of the Power Automate connector functionality.
+
+> **Info**: More information on the retirement of the incoming webhook functionality can be found in the [Retirement of Office 365 connectors within Microsoft Teams](https://devblogs.microsoft.com/microsoft365dev/retirement-of-office-365-connectors-within-microsoft-teams/) article.
+
+To create a Power Automate connector, you can follow these steps:
+
+- Start with the following [Post to a channel when a webhook request is received](https://make.preview.powerautomate.com/galleries/public/templates/d271a6f01c2545a28348d8f2cddf4c8f/post-to-a-channel-when-a-webhook-request-is-received) template
+- Click continue to use the template
+- Click on the **Post your own adaptive card as the Flow bot to a channel** action
+- Configure the action with the following settings:
+  - **Team**: Select the team where you want to post the message
+  - **Channel**: Select the channel where you want to post the message
+
+  ![Power Automate connector configuration](./assets/powerautomate-settings.png)
+
+- Click on the **Save** button
+- Click on **When a Teams webhook request is received** and copy the **HTTP URL**
 
 ## Installation
 
@@ -38,6 +60,7 @@ export default defineConfig({
       'playwright-msteams-reporter',
       {
         webhookUrl: "<webhookUrl>",
+        webhookType: "msteams", // or "powerautomate"
       }
     ]
   ],
@@ -53,6 +76,7 @@ The reporter supports the following configuration options:
 | Option | Description | Type | Required | Default |
 | --- | --- | --- | --- | --- |
 | `webhookUrl` | The Microsoft Teams webhook URL | `boolean` | `true` | `undefined` |
+| `webhookType` | The type of the webhook (`msteams` or `powerautomate`) | `string` | `false` | `msteams` |
 | `title` | The notification title | `string` | `false` | `Playwright Test Results` |
 | `linkToResultsUrl` | Link to the test results | `string` | `false` | `undefined` |
 | `linkToResultsText` | Text for the link to the test results | `string` | `false` | `View test results` |
@@ -66,11 +90,24 @@ The reporter supports the following configuration options:
 
 With the `mentionOnFailure` option, you can mention users in the Microsoft Teams channel when a test fails. You can provide an array of users to mention.
 
+### Mention users with the Microsoft Teams Incoming Webhook
+
 The format can be either the full name and email (`"Full name <email>"`) or just the email address (`email`). The reporter will replace the `{mentions}` placeholder in the `mentionOnFailureText` with the mentioned users.
 
 ```javascript
 {
   mentionOnFailure: "Elio Struyf <mail@elio.dev>,mail@elio.dev",
+  mentionOnFailureText: "{mentions} check those failed tests!"
+}
+```
+
+### Mention users with the Power Automate connector
+
+When using the Power Automate connector, you can mention users by providing their email address. The reporter will replace the `{mentions}` placeholder in the `mentionOnFailureText` with the mentioned users.
+
+```javascript
+{
+  mentionOnFailure: "mail@elio.dev,mail@elio.dev",
   mentionOnFailureText: "{mentions} check those failed tests!"
 }
 ```

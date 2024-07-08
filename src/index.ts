@@ -7,9 +7,11 @@ import type {
   FullResult,
 } from "@playwright/test/reporter";
 import { processResults } from "./processResults";
+import { WebhookType } from "./models";
 
 export interface MsTeamsReporterOptions {
   webhookUrl?: string;
+  webhookType?: WebhookType;
   title?: string;
   linkToResultsUrl?: string;
   linkToResultsText?: string;
@@ -26,6 +28,7 @@ export default class MsTeamsReporter implements Reporter {
   constructor(private options: MsTeamsReporterOptions) {
     const defaultOptions: MsTeamsReporterOptions = {
       webhookUrl: undefined,
+      webhookType: "msteams",
       title: "Playwright Test Results",
       linkToResultsUrl: undefined,
       linkToResultsText: "View test results",

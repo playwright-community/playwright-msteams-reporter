@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.5]
+
+- The reporter now supports Microsoft Teams incoming webhooks and Power Automate webhooks. You can configure this in the `webhookType` option.
+
 ## [0.0.4]
 
 - Added Microsoft Teams incoming webhook URL validation
