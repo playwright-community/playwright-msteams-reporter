@@ -1,14 +1,13 @@
 import { Suite } from "@playwright/test/reporter";
 import { MsTeamsReporterOptions } from ".";
 import {
-  createTable,
   createTableRow,
   getMentions,
   getTotalStatus,
   validateWebhookUrl,
 } from "./utils";
 import { Table } from "./models";
-import { Images } from "./constants";
+import { baseTable, Images } from "./constants";
 
 const adaptiveCard: any = {
   type: "AdaptiveCard",
@@ -52,7 +51,7 @@ export const processResults = async (
     return;
   }
 
-  const table: Table = createTable();
+  const table: Table = baseTable;
   table.rows.push(createTableRow("Type", "Total"));
 
   table.rows.push(
@@ -137,20 +136,16 @@ export const processResults = async (
     adaptiveCard.version = "1.4";
   }
 
-  const body = JSON.stringify(
-    {
-      type: "message",
-      attachments: [
-        {
-          contentType: "application/vnd.microsoft.card.adaptive",
-          contentUrl: null,
-          content: adaptiveCard,
-        },
-      ],
-    },
-    null,
-    2
-  );
+  const body = JSON.stringify({
+    type: "message",
+    attachments: [
+      {
+        contentType: "application/vnd.microsoft.card.adaptive",
+        contentUrl: null,
+        content: adaptiveCard,
+      },
+    ],
+  });
 
   if (options.debug) {
     console.log("Sending the following message:");

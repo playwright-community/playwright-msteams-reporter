@@ -28,7 +28,7 @@ export default class MsTeamsReporter implements Reporter {
   constructor(private options: MsTeamsReporterOptions) {
     const defaultOptions: MsTeamsReporterOptions = {
       webhookUrl: undefined,
-      webhookType: "msteams",
+      webhookType: "powerautomate",
       title: "Playwright Test Results",
       linkToResultsUrl: undefined,
       linkToResultsText: "View test results",

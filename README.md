@@ -1,28 +1,26 @@
 # Microsoft Teams reporter for Playwright
 
-This is a Microsoft Teams reporter for Playwright. It allows you to send the test results to a Microsoft Teams channel and mention users on failure.
+This reporter for Playwright allows you to send the test results to a Microsoft Teams channel and mention users on failure.
 
 Here you can see an example card for successful test results:
 
 ![Microsoft Teams card for successful test results](./assets/success.png)
 
-And here you can see an example card for failed test results:
+Here you can see an example card for failed test results:
 
 ![Microsoft Teams card for failed test results](./assets/failure.png)
 
 ## Prerequisites
 
-### Microsoft Teams incoming webhook (retiring October 1, 2024)
+To use this reporter, you must have a Microsoft Teams webhook URL. You can create a webhook URL using the Microsoft Teams Power Automate connector or the Microsoft Teams incoming webhook functionality.
 
-To make use of this reporter, you need to create a incoming webhook for your Microsoft Teams channel. You can find more information on how to do this in the [Microsoft documentation](https://learn.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook?tabs=newteams%2Cdotnet#create-an-incoming-webhook).
+As the incoming webhook functionality will stop working on October 1, 2024, it is recommended to use the Power Automate connector functionality.
 
-> **Info**: You need to copy the `webhook URL` from the configuration as you will need it to configure the reporter.
+> **Important**: You need to copy the `webhook URL` from the configuration, as you will need it to configure the reporter.
+
+> **Info**: The [Retirement of Office 365 connectors within Microsoft Teams](https://devblogs.microsoft.com/microsoft365dev/retirement-of-office-365-connectors-within-microsoft-teams/) article provides more information on the retirement of the incoming webhook functionality.
 
 ### Microsoft Teams Power Automate connector
-
-As the incoming webhook functionality will stop working on October 1, 2024, you can already make use of the Power Automate connector functionality.
-
-> **Info**: More information on the retirement of the incoming webhook functionality can be found in the [Retirement of Office 365 connectors within Microsoft Teams](https://devblogs.microsoft.com/microsoft365dev/retirement-of-office-365-connectors-within-microsoft-teams/) article.
 
 To create a Power Automate connector, you can follow these steps:
 
@@ -33,10 +31,16 @@ To create a Power Automate connector, you can follow these steps:
   - **Team**: Select the team where you want to post the message
   - **Channel**: Select the channel where you want to post the message
 
-  ![Power Automate connector configuration](./assets/powerautomate-settings.png)
+ ![Power Automate connector configuration](./assets/powerautomate-settings.png)
 
 - Click on the **Save** button
 - Click on **When a Teams webhook request is received** and copy the **HTTP URL**
+
+### Microsoft Teams incoming webhook (retiring October 1, 2024)
+
+To use this reporter, you need to create an incoming webhook for your Microsoft Teams channel. You can find more information on how to do this in the [Microsoft documentation](https://learn.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook?tabs=newteams%2Cdotnet#create-an-incoming-webhook).
+
+> **Important**: You need to copy the `webhook URL` from the configuration, as you will need it to configure the reporter.
 
 ## Installation
 
@@ -60,7 +64,7 @@ export default defineConfig({
       'playwright-msteams-reporter',
       {
         webhookUrl: "<webhookUrl>",
-        webhookType: "msteams", // or "powerautomate"
+        webhookType: "powerautomate", // or "msteams"
       }
     ]
   ],
@@ -76,7 +80,7 @@ The reporter supports the following configuration options:
 | Option | Description | Type | Required | Default |
 | --- | --- | --- | --- | --- |
 | `webhookUrl` | The Microsoft Teams webhook URL | `boolean` | `true` | `undefined` |
-| `webhookType` | The type of the webhook (`msteams` or `powerautomate`) | `string` | `false` | `msteams` |
+| `webhookType` | The type of the webhook (`msteams` or `powerautomate`) | `string` | `false` | `powerautomate` |
 | `title` | The notification title | `string` | `false` | `Playwright Test Results` |
 | `linkToResultsUrl` | Link to the test results | `string` | `false` | `undefined` |
 | `linkToResultsText` | Text for the link to the test results | `string` | `false` | `View test results` |
@@ -90,6 +94,17 @@ The reporter supports the following configuration options:
 
 With the `mentionOnFailure` option, you can mention users in the Microsoft Teams channel when a test fails. You can provide an array of users to mention.
 
+### Mention users with the Power Automate connector
+
+You can mention users by providing their email addresses when using the Power Automate connector. The reporter will replace the `{mentions}` placeholder in the `mentionOnFailureText` with the mentioned users.
+
+```javascript
+{
+  mentionOnFailure: "mail1@elio.dev,mail2@elio.dev",
+  mentionOnFailureText: "{mentions} check those failed tests!"
+}
+```
+
 ### Mention users with the Microsoft Teams Incoming Webhook
 
 The format can be either the full name and email (`"Full name <email>"`) or just the email address (`email`). The reporter will replace the `{mentions}` placeholder in the `mentionOnFailureText` with the mentioned users.
@@ -101,20 +116,9 @@ The format can be either the full name and email (`"Full name <email>"`) or just
 }
 ```
 
-### Mention users with the Power Automate connector
-
-When using the Power Automate connector, you can mention users by providing their email address. The reporter will replace the `{mentions}` placeholder in the `mentionOnFailureText` with the mentioned users.
-
-```javascript
-{
-  mentionOnFailure: "mail@elio.dev,mail@elio.dev",
-  mentionOnFailureText: "{mentions} check those failed tests!"
-}
-```
-
 ### Link to the results
 
-With the `linkToResultsUrl` option, you can provide a link to the test results. You can for instance use this to view the test results on your CI/CD platform.
+With the `linkToResultsUrl` option, you can provide a link to the test results. For example, you can view the test results on your CI/CD platform.
 
 ```javascript
 {

@@ -1,4 +1,3 @@
-export * from "./createTable";
 export * from "./createTableRow";
 export * from "./getMentions";
 export * from "./getTestOutcome";
