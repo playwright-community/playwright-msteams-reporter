@@ -1,5 +1,9 @@
 # Microsoft Teams reporter for Playwright
 
+[![npm version](https://badge.fury.io/js/playwright-msteams-reporter.svg)](https://badge.fury.io/js/playwright-msteams-reporter)
+[![Downloads](https://img.shields.io/npm/dt/playwright-msteams-reporter)](https://www.npmjs.com/package/playwright-msteams-reporter)
+![License](https://img.shields.io/github/license/estruyf/playwright-msteams-reporter)
+
 This reporter for Playwright allows you to send the test results to a Microsoft Teams channel and mention users on failure.
 
 Here you can see an example card for successful test results:
