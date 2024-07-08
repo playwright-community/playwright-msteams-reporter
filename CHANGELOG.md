@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.4]
+
+- Added Microsoft Teams incoming webhook URL validation
+- Added Jest tests
+
 ## [0.0.3]
 
 - Added `debug` option to show the options that are used, plus the payload that is sent to the Microsoft Teams webhook.
