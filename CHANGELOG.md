@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.6]
+
+- Set the default value for the `webhookType` option to `powerautomate`.
+
 ## [0.0.5]
 
 - The reporter now supports Microsoft Teams incoming webhooks and Power Automate webhooks. You can configure this in the `webhookType` option.
