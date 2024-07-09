@@ -24,9 +24,9 @@ As the incoming webhook functionality will stop working on October 1, 2024, it i
 
 > **Info**: The [Retirement of Office 365 connectors within Microsoft Teams](https://devblogs.microsoft.com/microsoft365dev/retirement-of-office-365-connectors-within-microsoft-teams/) article provides more information on the retirement of the incoming webhook functionality.
 
-### Microsoft Teams Power Automate connector
+### Microsoft Teams Power Automate webhook
 
-To create a Power Automate connector, you can follow these steps:
+To create a Power Automate webhook for Microsoft Teams, you can follow these steps:
 
 - Start with the following [Post to a channel when a webhook request is received](https://make.preview.powerautomate.com/galleries/public/templates/d271a6f01c2545a28348d8f2cddf4c8f/post-to-a-channel-when-a-webhook-request-is-received) template
 - Click continue to use the template
