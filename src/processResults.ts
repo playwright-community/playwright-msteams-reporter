@@ -6,19 +6,7 @@ import {
   getTotalStatus,
   validateWebhookUrl,
 } from "./utils";
-import { Table } from "./models";
-import { baseTable, Images } from "./constants";
-
-const adaptiveCard: any = {
-  type: "AdaptiveCard",
-  body: [],
-  msteams: {
-    width: "Full",
-  },
-  actions: [],
-  $schema: "http://adaptivecards.io/schemas/adaptive-card.json",
-  version: "1.6",
-};
+import { BaseAdaptiveCard, BaseTable, Images } from "./constants";
 
 export const processResults = async (
   suite: Suite | undefined,
@@ -39,6 +27,10 @@ export const processResults = async (
     return;
   }
 
+  // Clone the base adaptive card and table
+  const adaptiveCard = structuredClone(BaseAdaptiveCard);
+  const table = structuredClone(BaseTable);
+
   const totalStatus = getTotalStatus(suite.suites);
   const totalTests = suite.allTests().length;
   const failedTests = totalStatus.failed + totalStatus.timedOut;
@@ -51,7 +43,6 @@ export const processResults = async (
     return;
   }
 
-  const table: Table = baseTable;
   table.rows.push(createTableRow("Type", "Total"));
 
   table.rows.push(

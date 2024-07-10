@@ -1,6 +1,6 @@
 import { Table } from "../models";
 
-export const baseTable: Table = {
+export const BaseTable: Table = {
   type: "Table",
   columns: [
     {
