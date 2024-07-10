@@ -60,13 +60,14 @@ You can configure the reporter by adding it to the `playwright.config.js` file:
 
 ```javascript
 import { defineConfig } from '@playwright/test';
+import type { MsTeamsReporterOptions } from "playwright-msteams-reporter";
 
 export default defineConfig({
   reporter: [
     ['list'],
     [
       'playwright-msteams-reporter',
-      {
+      <MsTeamsReporterOptions>{
         webhookUrl: "<webhookUrl>",
         webhookType: "powerautomate", // or "msteams"
       }

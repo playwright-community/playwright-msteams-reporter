@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.7]
+
+- Included the type definition files
+- [#3](https://github.com/playwright-community/playwright-msteams-reporter/issues/3): Sending duplicate results to the webhook
+
 ## [0.0.6]
 
 - Set the default value for the `webhookType` option to `powerautomate`.
