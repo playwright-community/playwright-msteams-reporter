@@ -20,21 +20,12 @@ const config: PlaywrightTestConfig<{}, {}> = {
       "./src/index.ts",
       <MsTeamsReporterOptions>{
         webhookUrl: process.env.FLOW_WEBHOOK_URL,
-        title: "E2E Test Results 1",
+        title: "E2E Test Results",
         linkToResultsUrl: "https://eliostruyf.com",
         linkToResultsText: "View results",
-        mentionOnFailure: "Elio <elio@struyfconsulting.be>, mail@elio.dev",
-        mentionOnFailureText: "",
-        debug: true,
-      },
-    ],
-    [
-      "./src/index.ts",
-      <MsTeamsReporterOptions>{
-        webhookUrl: process.env.FLOW_WEBHOOK_URL,
-        title: "E2E Test Results 2",
-        linkToResultsUrl: "https://eliostruyf.com",
-        linkToResultsText: "View results",
+        linkUrlOnFailure:
+          "https://github.com/playwright-community/playwright-msteams-reporter/issues",
+        linkTextOnFailure: "Report an issue",
         mentionOnFailure: "Elio <elio@struyfconsulting.be>, mail@elio.dev",
         mentionOnFailureText: "",
         debug: true,

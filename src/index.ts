@@ -15,6 +15,8 @@ export interface MsTeamsReporterOptions {
   title?: string;
   linkToResultsUrl?: string;
   linkToResultsText?: string;
+  linkUrlOnFailure?: string;
+  linkTextOnFailure?: string;
   notifyOnSuccess?: boolean;
   mentionOnFailure?: string;
   mentionOnFailureText?: string;

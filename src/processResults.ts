@@ -123,6 +123,14 @@ export const processResults = async (
     });
   }
 
+  if (!isSuccess && options.linkTextOnFailure && options.linkUrlOnFailure) {
+    adaptiveCard.actions.push({
+      type: "Action.OpenUrl",
+      title: options.linkTextOnFailure,
+      url: options.linkUrlOnFailure,
+    });
+  }
+
   if (options.webhookType === "powerautomate") {
     adaptiveCard.version = "1.4";
   }

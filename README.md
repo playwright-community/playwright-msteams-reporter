@@ -89,6 +89,8 @@ The reporter supports the following configuration options:
 | `title` | The notification title | `string` | `false` | `Playwright Test Results` |
 | `linkToResultsUrl` | Link to the test results | `string` | `false` | `undefined` |
 | `linkToResultsText` | Text for the link to the test results | `string` | `false` | `View test results` |
+| `linkUrlOnFailure` | Link to page where you can view, trigger, etc. the failed tests | `string` | `false` | `undefined` |
+| `linkTextOnFailure` | Text for the failed tests link action | `string` | `false` | `undefined` |
 | `notifyOnSuccess` | Notify on success | `boolean` | `false` | `true` |
 | `mentionOnFailure` | Mention users on failure (comma separated list) | `string` | `false` | `undefined` |
 | `mentionOnFailureText` | Text to mention users on failure | `string` | `false` | `{mentions} please validate the test results.` |
