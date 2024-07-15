@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ## [0.0.7]
 
 - Included the type definition files
+- Updated project information
 - [#2](https://github.com/playwright-community/playwright-msteams-reporter/issues/2): Added the `linkUrlOnFailure` and `linkTextOnFailure` options
 - [#3](https://github.com/playwright-community/playwright-msteams-reporter/issues/3): Sending duplicate results to the webhook
 
