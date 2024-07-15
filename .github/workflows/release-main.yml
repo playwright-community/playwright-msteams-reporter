@@ -33,7 +33,9 @@ jobs:
           registry-url: https://registry.npmjs.org
 
       - name: Verify .npmrc file
-        run: cat .npmrc
+        run: |
+          echo $NPM_CONFIG_USERCONFIG
+          cat $NPM_CONFIG_USERCONFIG
 
       - name: Install npm dependencies
         run: npm ci
