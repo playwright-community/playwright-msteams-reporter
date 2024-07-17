@@ -3,10 +3,13 @@ import { MsTeamsReporterOptions } from ".";
 import {
   createTableRow,
   getMentions,
+  getNotificationBackground,
+  getNotificationColor,
+  getNotificationTitle,
   getTotalStatus,
   validateWebhookUrl,
 } from "./utils";
-import { BaseAdaptiveCard, BaseTable, Images } from "./constants";
+import { BaseAdaptiveCard, BaseTable } from "./constants";
 
 export const processResults = async (
   suite: Suite | undefined,
@@ -33,8 +36,7 @@ export const processResults = async (
 
   const totalStatus = getTotalStatus(suite.suites);
   const totalTests = suite.allTests().length;
-  const failedTests = totalStatus.failed + totalStatus.timedOut;
-  const isSuccess = failedTests === 0;
+  const isSuccess = totalStatus.failed === 0;
 
   if (isSuccess && !options.notifyOnSuccess) {
     if (!options.quiet) {
@@ -48,11 +50,16 @@ export const processResults = async (
   table.rows.push(
     createTableRow("Passed", totalStatus.passed, { style: "good" })
   );
+  if (totalStatus.flaky) {
+    table.rows.push(
+      createTableRow("Flaky", totalStatus.flaky, { style: "warning" })
+    );
+  }
   table.rows.push(
-    createTableRow("Failed", failedTests, { style: "attention" })
+    createTableRow("Failed", totalStatus.failed, { style: "attention" })
   );
   table.rows.push(
-    createTableRow("Skipped", totalStatus.skipped, { style: "warning" })
+    createTableRow("Skipped", totalStatus.skipped, { style: "accent" })
   );
   table.rows.push(
     createTableRow("Total tests", totalTests, {
@@ -74,14 +81,14 @@ export const processResults = async (
         type: "TextBlock",
         size: "Large",
         weight: "Bolder",
-        text: isSuccess ? "Tests passed" : "Tests failed",
-        color: isSuccess ? "Good" : "Attention",
+        text: getNotificationTitle(totalStatus),
+        color: getNotificationColor(totalStatus),
       },
       table,
     ] as any[],
     bleed: true,
     backgroundImage: {
-      url: isSuccess ? Images.success : Images.failed,
+      url: getNotificationBackground(totalStatus),
       fillMode: "RepeatHorizontally",
     },
   };
