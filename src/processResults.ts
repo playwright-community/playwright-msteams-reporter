@@ -48,18 +48,34 @@ export const processResults = async (
   table.rows.push(createTableRow("Type", "Total"));
 
   table.rows.push(
-    createTableRow("Passed", totalStatus.passed, { style: "good" })
+    createTableRow(
+      `${options.enableEmoji ? "✅ " : ""}Passed`,
+      totalStatus.passed,
+      { style: "good" }
+    )
   );
   if (totalStatus.flaky) {
     table.rows.push(
-      createTableRow("Flaky", totalStatus.flaky, { style: "warning" })
+      createTableRow(
+        `${options.enableEmoji ? "⚠️ " : ""}Flaky`,
+        totalStatus.flaky,
+        { style: "warning" }
+      )
     );
   }
   table.rows.push(
-    createTableRow("Failed", totalStatus.failed, { style: "attention" })
+    createTableRow(
+      `${options.enableEmoji ? "❌ " : ""}Failed`,
+      totalStatus.failed,
+      { style: "attention" }
+    )
   );
   table.rows.push(
-    createTableRow("Skipped", totalStatus.skipped, { style: "accent" })
+    createTableRow(
+      `${options.enableEmoji ? "⏭️ " : ""}Skipped`,
+      totalStatus.skipped,
+      { style: "accent" }
+    )
   );
   table.rows.push(
     createTableRow("Total tests", totalTests, {

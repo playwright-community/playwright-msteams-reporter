@@ -94,6 +94,7 @@ The reporter supports the following configuration options:
 | `notifyOnSuccess` | Notify on success | `boolean` | `false` | `true` |
 | `mentionOnFailure` | Mention users on failure (comma separated list) | `string` | `false` | `undefined` |
 | `mentionOnFailureText` | Text to mention users on failure | `string` | `false` | `{mentions} please validate the test results.` |
+| `enableEmoji` | Show an emoji based on the test status | `boolean` | `false` | `false` |
 | `quiet` | Do not show any output in the console | `boolean` | `false` | `false` |
 | `debug` | Show debug information | `boolean` | `false` | `false` |
 

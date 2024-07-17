@@ -28,6 +28,7 @@ const config: PlaywrightTestConfig<{}, {}> = {
         linkTextOnFailure: "Report an issue",
         mentionOnFailure: "elio@struyfconsulting.be",
         mentionOnFailureText: "",
+        enableEmoji: false,
         debug: true,
       },
     ],
