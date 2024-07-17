@@ -1,9 +1,9 @@
-name: Release main
+name: Beta release
+
 on:
-  release:
-    types:
-      - published
-  workflow_dispatch:
+  push:
+    branches:
+      - dev
 
 jobs:
   test:
@@ -38,7 +38,11 @@ jobs:
       - name: Run build
         run: npm run build
 
+      - name: Update the package version
+        if: github.ref == 'refs/heads/dev'
+        run: node scripts/update-package-version.js $GITHUB_RUN_ID
+
       - name: Publish release
-        run: npm publish
+        run: npm publish --tag next --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_PUBLISH_TOKEN}}
