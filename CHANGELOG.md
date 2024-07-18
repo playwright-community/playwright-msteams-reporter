@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.9]
+
+- [#7](https://github.com/playwright-community/playwright-msteams-reporter/issues/7): Fix for Power Automate webhook URL validation
+
 ## [0.0.8]
 
 - [#4](https://github.com/playwright-community/playwright-msteams-reporter/issues/4): Added support for flaky tests
