@@ -19,7 +19,7 @@ export interface TableCell {
   style?: TableCellStyle;
 }
 
-export type TableCellStyle = "attention" | "good" | "warning";
+export type TableCellStyle = "attention" | "good" | "warning" | "accent";
 
 export interface TextBlock {
   type: "TextBlock";

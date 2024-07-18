@@ -20,13 +20,31 @@ const DEFAULT_OPTIONS: MsTeamsReporterOptions = {
 const SUITE_MOCK_PASSED = {
   suites: [
     {
-      allTests: () => [{ results: [{ status: "passed" }] }],
+      allTests: () => [{ outcome: () => "expected" }],
     },
     {
       allTests: () => [
-        { results: [{ status: "passed" }] },
-        { results: [{ status: "passed" }] },
+        { outcome: () => "expected" },
+        { outcome: () => "expected" },
       ],
+    },
+  ],
+  allTests: () => [{}, {}, {}],
+};
+
+const SUITE_MOCK_FLAKY = {
+  suites: [
+    {
+      allTests: () => [{ outcome: () => "expected" }],
+    },
+    {
+      allTests: () => [
+        { outcome: () => "expected" },
+        { outcome: () => "expected" },
+      ],
+    },
+    {
+      allTests: () => [{ outcome: () => "flaky" }],
     },
   ],
   allTests: () => [{}, {}, {}],
@@ -35,12 +53,12 @@ const SUITE_MOCK_PASSED = {
 const SUITE_MOCK_FAILED = {
   suites: [
     {
-      allTests: () => [{ results: [{ status: "failed" }] }],
+      allTests: () => [{ outcome: () => "unexpected" }],
     },
     {
       allTests: () => [
-        { results: [{ status: "passed" }] },
-        { results: [{ status: "passed" }] },
+        { outcome: () => "expected" },
+        { outcome: () => "expected" },
       ],
     },
   ],
@@ -165,6 +183,30 @@ describe("processResults", () => {
     consoleErrorSpy.mockReset();
   });
 
+  it("should include a flaky row", async () => {
+    const consoleLogSpy = jest
+      .spyOn(console, "log")
+      .mockImplementation((message) => {
+        if (message.includes("message") && message.includes("Flaky")) {
+          console.log(`Flaky`);
+        }
+      });
+    const fetchMock = jest
+      .fn()
+      .mockResolvedValue({ ok: true, text: () => "1" });
+    global.fetch = fetchMock;
+    const options: MsTeamsReporterOptions = {
+      ...DEFAULT_OPTIONS,
+      webhookUrl: FLOW_WEBHOOK_URL,
+      webhookType: "powerautomate",
+      debug: true,
+    };
+    await processResults(SUITE_MOCK_FLAKY as any, options);
+    expect(consoleLogSpy).toHaveBeenCalledWith("Flaky");
+
+    consoleLogSpy.mockReset();
+  });
+
   it("should use version 1.4 for adaptive card", async () => {
     const consoleLogSpy = jest
       .spyOn(console, "log")
@@ -273,6 +315,39 @@ describe("processResults", () => {
     };
     await processResults(SUITE_MOCK_FAILED as any, options);
     expect(consoleLogSpy).toHaveBeenCalledWith(fakeLink);
+
+    consoleLogSpy.mockReset();
+  });
+
+  it("should include the failure link", async () => {
+    const fakeFailureLink =
+      "https://github.com/estruyf/playwright-msteams-reporter";
+    const fakeFailureText = "View the failed tests";
+    const consoleLogSpy = jest
+      .spyOn(console, "log")
+      .mockImplementation((message) => {
+        if (
+          message.includes("message") &&
+          message.includes(fakeFailureLink) &&
+          message.includes(fakeFailureText)
+        ) {
+          console.log(fakeFailureText);
+        }
+      });
+    const fetchMock = jest
+      .fn()
+      .mockResolvedValue({ ok: true, text: () => "1" });
+    global.fetch = fetchMock;
+    const options: MsTeamsReporterOptions = {
+      ...DEFAULT_OPTIONS,
+      webhookUrl: FLOW_WEBHOOK_URL,
+      webhookType: "powerautomate",
+      linkUrlOnFailure: fakeFailureLink,
+      linkTextOnFailure: "View the failed tests",
+      debug: true,
+    };
+    await processResults(SUITE_MOCK_FAILED as any, options);
+    expect(consoleLogSpy).toHaveBeenCalledWith(fakeFailureText);
 
     consoleLogSpy.mockReset();
   });

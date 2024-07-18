@@ -5,6 +5,7 @@ node_modules
 src
 test-results
 tests
+scripts
 
 playwright.config.ts
 tsconfig.json

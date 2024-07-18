@@ -20,6 +20,7 @@ export interface MsTeamsReporterOptions {
   notifyOnSuccess?: boolean;
   mentionOnFailure?: string;
   mentionOnFailureText?: string;
+  enableEmoji?: boolean;
   quiet?: boolean;
   debug?: boolean;
 }
@@ -37,6 +38,7 @@ export default class MsTeamsReporter implements Reporter {
       notifyOnSuccess: true,
       mentionOnFailure: undefined,
       mentionOnFailureText: "{mentions} please validate the test results.",
+      enableEmoji: false,
       quiet: false,
       debug: false,
     };

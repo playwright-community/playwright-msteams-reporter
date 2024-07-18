@@ -19,12 +19,8 @@ describe("getTotalStatus", () => {
         ...baseSuite,
         allTests: () =>
           [
-            {
-              results: [{ status: "passed" }],
-            },
-            {
-              results: [{ status: "passed" }],
-            },
+            { outcome: () => "expected" },
+            { outcome: () => "expected" },
           ] as any[],
       },
     ];
@@ -34,33 +30,46 @@ describe("getTotalStatus", () => {
     expect(result).toEqual({
       passed: 2,
       failed: 0,
+      flaky: 0,
       skipped: 0,
-      timedOut: 0,
     });
   });
 
-  it("should return the correct total status when there are failed, skipped, and timed out tests", () => {
+  it("should return the correct flaky total when there are flaky tests", () => {
     const suites: Suite[] = [
       {
         ...baseSuite,
         allTests: () =>
           [
-            {
-              results: [{ status: "passed" }],
-            },
-            {
-              results: [{ status: "failed" }],
-            },
-            {
-              results: [{ status: "skipped" }],
-            },
-            {
-              results: [{ status: "timedOut" }],
-            },
-            {
-              results: [{}],
-              outcome: () => "unexpected",
-            },
+            { outcome: () => "expected" },
+            { outcome: () => "expected" },
+            { outcome: () => "unexpected" },
+            { outcome: () => "flaky" },
+          ] as any[],
+      },
+    ];
+
+    const result = getTotalStatus(suites);
+
+    expect(result).toEqual({
+      passed: 2,
+      failed: 1,
+      flaky: 1,
+      skipped: 0,
+    });
+  });
+
+  it("should return the correct total status when there are failed, skipped tests", () => {
+    const suites: Suite[] = [
+      {
+        ...baseSuite,
+        allTests: () =>
+          [
+            { outcome: () => "expected" },
+            { outcome: () => "unexpected" },
+            { outcome: () => "flaky" },
+            { outcome: () => "unexpected" },
+            { outcome: () => "skipped" },
           ] as any[],
       },
     ];
@@ -70,8 +79,8 @@ describe("getTotalStatus", () => {
     expect(result).toEqual({
       passed: 1,
       failed: 2,
+      flaky: 1,
       skipped: 1,
-      timedOut: 1,
     });
   });
 
@@ -83,8 +92,8 @@ describe("getTotalStatus", () => {
     expect(result).toEqual({
       passed: 0,
       failed: 0,
+      flaky: 0,
       skipped: 0,
-      timedOut: 0,
     });
   });
 });

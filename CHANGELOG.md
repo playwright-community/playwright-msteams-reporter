@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.8]
+
+- [#4](https://github.com/playwright-community/playwright-msteams-reporter/issues/4): Added support for flaky tests
+- [#5](https://github.com/playwright-community/playwright-msteams-reporter/issues/5): Added the `enableEmoji` setting to show an emoji based on the test status
+
 ## [0.0.7]
 
 - Included the type definition files

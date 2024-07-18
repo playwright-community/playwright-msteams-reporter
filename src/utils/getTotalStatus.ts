@@ -1,36 +1,28 @@
 import { Suite } from "@playwright/test/reporter";
-import { getTestOutcome } from ".";
+import { TestStatuses } from "../models";
 
-export const getTotalStatus = (
-  suites: Suite[]
-): {
-  passed: number;
-  failed: number;
-  skipped: number;
-  timedOut: number;
-} => {
+export const getTotalStatus = (suites: Suite[]): TestStatuses => {
   let total = {
     passed: 0,
+    flaky: 0,
     failed: 0,
     skipped: 0,
-    timedOut: 0,
   };
 
   for (const suite of suites) {
     const testOutcome = suite.allTests().map((test) => {
-      const lastResult = test.results[test.results.length - 1];
-      return getTestOutcome(test, lastResult);
+      return test.outcome();
     });
 
     for (const outcome of testOutcome) {
-      if (outcome === "passed") {
+      if (outcome === "expected") {
         total.passed++;
-      } else if (outcome === "failed") {
+      } else if (outcome === "flaky") {
+        total.flaky++;
+      } else if (outcome === "unexpected") {
         total.failed++;
       } else if (outcome === "skipped") {
         total.skipped++;
-      } else if (outcome === "timedOut") {
-        total.timedOut++;
       }
     }
   }
