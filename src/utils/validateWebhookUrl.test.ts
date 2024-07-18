@@ -18,6 +18,15 @@ describe("validateWebhookUrl", () => {
     ).toBe(true);
   });
 
+  it("Valid Power Automate webhook URL (France) (with argument)", () => {
+    expect(
+      validateWebhookUrl(
+        "https://prod2-00.francecentral.logic.azure.com:443/workflows/1234567890abcdef1234567890abcdef/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=1234567890abcdef1234567890abcdef",
+        "powerautomate"
+      )
+    ).toBe(true);
+  });
+
   it("Invalid Power Automate webhook URL 1", () => {
     expect(
       validateWebhookUrl(

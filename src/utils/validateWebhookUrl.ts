@@ -15,7 +15,7 @@ export const validateWebhookUrl = (
     // https://prod-{int}.{region}.logic.azure.com:443/workflows/{id}/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig={sig}
     return !!(
       webhookUrl &&
-      webhookUrl.startsWith("https://prod-") &&
+      webhookUrl.startsWith("https://prod") &&
       webhookUrl.includes("logic.azure.com") &&
       webhookUrl.includes("/workflows/") &&
       webhookUrl.includes("/triggers/")
