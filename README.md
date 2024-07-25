@@ -128,10 +128,18 @@ The format can be either the full name and email (`"Full name <email>"`) or just
 
 With the `linkToResultsUrl` option, you can provide a link to the test results. For example, you can view the test results on your CI/CD platform.
 
+#### Github
 ```javascript
 {
   // The link to your GitHub Actions workflow run
   linkToResultsUrl: `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`,
+}
+```
+#### Azure Devops
+```javascript
+{
+  // The link to your Azure DevOps pipeline run (add &view=artifacts&type=publishedArtifacts to access linked artifacts directly)
+  linkToResultsUrl: `${process.env.AZDO_SERVER_URL}/${process.env.AZDO_COLLECTION}/${process.env.AZDO_PROJECT}/_build/results?buildId=${process.env.AZDO_RUN_ID}`,
 }
 ```
 
