@@ -23,6 +23,7 @@ export interface MsTeamsReporterOptions {
   enableEmoji?: boolean;
   quiet?: boolean;
   debug?: boolean;
+  azureDevOps?: boolean;
 }
 
 export default class MsTeamsReporter implements Reporter {
@@ -41,6 +42,7 @@ export default class MsTeamsReporter implements Reporter {
       enableEmoji: false,
       quiet: false,
       debug: false,
+      azureDevOps: false,
     };
 
     this.options = { ...defaultOptions, ...options };
@@ -60,7 +62,7 @@ export default class MsTeamsReporter implements Reporter {
   onStdOut(
     chunk: string | Buffer,
     _: void | TestCase,
-    __: void | TestResult
+    __: void | TestResult,
   ): void {
     if (this.options.quiet) {
       return;

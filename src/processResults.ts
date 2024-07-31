@@ -13,7 +13,7 @@ import { BaseAdaptiveCard, BaseTable } from "./constants";
 
 export const processResults = async (
   suite: Suite | undefined,
-  options: MsTeamsReporterOptions
+  options: MsTeamsReporterOptions,
 ) => {
   if (!options.webhookUrl) {
     console.error("No webhook URL provided");
@@ -51,37 +51,37 @@ export const processResults = async (
     createTableRow(
       `${options.enableEmoji ? "✅ " : ""}Passed`,
       totalStatus.passed,
-      { style: "good" }
-    )
+      { style: "good" },
+    ),
   );
   if (totalStatus.flaky) {
     table.rows.push(
       createTableRow(
         `${options.enableEmoji ? "⚠️ " : ""}Flaky`,
         totalStatus.flaky,
-        { style: "warning" }
-      )
+        { style: "warning" },
+      ),
     );
   }
   table.rows.push(
     createTableRow(
       `${options.enableEmoji ? "❌ " : ""}Failed`,
       totalStatus.failed,
-      { style: "attention" }
-    )
+      { style: "attention" },
+    ),
   );
   table.rows.push(
     createTableRow(
       `${options.enableEmoji ? "⏭️ " : ""}Skipped`,
       totalStatus.skipped,
-      { style: "accent" }
-    )
+      { style: "accent" },
+    ),
   );
   table.rows.push(
     createTableRow("Total tests", totalTests, {
       isSubtle: true,
       weight: "Bolder",
-    })
+    }),
   );
 
   const container = {
@@ -113,7 +113,7 @@ export const processResults = async (
   if (!isSuccess) {
     const mentionData = getMentions(
       options.mentionOnFailure,
-      options.mentionOnFailureText
+      options.mentionOnFailureText,
     );
     if (mentionData?.message && mentionData.mentions.length > 0) {
       container.items.push({
@@ -138,11 +138,18 @@ export const processResults = async (
   adaptiveCard.body.push(container);
 
   // Get the github actions run URL
-  if (options.linkToResultsUrl) {
+  if (options.linkToResultsUrl || options.azureDevOps) {
+    let linkToResultsUrl = "";
+    if (options.linkToResultsUrl) {
+      linkToResultsUrl = options.linkToResultsUrl;
+    }
+    if (options.azureDevOps) {
+      linkToResultsUrl = `${process.env.AZURE_SERVER_URL}/${process.env.AZURE_COLLECTION}/${process.env.AZURE_PROJECT}/_testManagement/runs?runId=${process.env.AZURE_PW_TEST_RUN_ID}&_a=runCharts`;
+    }
     adaptiveCard.actions.push({
       type: "Action.OpenUrl",
       title: options.linkToResultsText,
-      url: options.linkToResultsUrl,
+      url: linkToResultsUrl,
     });
   }
 

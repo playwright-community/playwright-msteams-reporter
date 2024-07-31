@@ -143,6 +143,20 @@ With the `linkToResultsUrl` option, you can provide a link to the test results. 
 }
 ```
 
+#### Azure Devops with "playwright-azure-reporter"
+```javascript
+{
+  // Activate Azure DevOps
+  azureDevOps: true,
+}
+```
+Environment variables needed:
+- `AZURE_SERVER_URL`
+- `AZURE_COLLECTION`
+- `AZURE_PROJECT`
+
+AZURE_PW_TEST_RUN_ID: Is obtained from the `playwright-azure-reporter` output.
+
 <br />
 
 [![Visitors](https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2Festruyf%2Fplaywright-msteams-reporter&countColor=%23263759)](https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2Festruyf%2Fplaywright-msteams-reporter)
