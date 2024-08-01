@@ -129,6 +129,7 @@ The format can be either the full name and email (`"Full name <email>"`) or just
 With the `linkToResultsUrl` option, you can provide a link to the test results. For example, you can view the test results on your CI/CD platform.
 
 #### Github
+
 ```javascript
 {
   // The link to your GitHub Actions workflow run
@@ -136,11 +137,25 @@ With the `linkToResultsUrl` option, you can provide a link to the test results. 
 }
 ```
 #### Azure Devops
+
 ```javascript
 {
   // The link to your Azure DevOps pipeline run (add &view=artifacts&type=publishedArtifacts to access linked artifacts directly)
-  linkToResultsUrl: `${process.env.AZDO_SERVER_URL}/${process.env.AZDO_COLLECTION}/${process.env.AZDO_PROJECT}/_build/results?buildId=${process.env.AZDO_RUN_ID}`,
+  linkToResultsUrl: `${process.env.AZURE_SERVER_URL}/${process.env.AZURE_PROJECT}/_build/results?buildId=${process.env.AZURE_RUN_ID}`,
 }
+```
+
+Make sure to provide the environment variables in your Azure DevOps pipeline:
+
+```yaml
+- script: npx playwright test
+  displayName: "Run Playwright tests"
+  name: "playwright"
+  env:
+    CI: "true"
+    AZURE_SERVER_URL: $(System.CollectionUri)
+    AZURE_PROJECT: $(System.TeamProject)
+    AZURE_RUN_ID: $(Build.BuildId)
 ```
 
 <br />
