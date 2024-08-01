@@ -139,18 +139,32 @@ export const processResults = async (
 
   // Get the github actions run URL
   if (options.linkToResultsUrl) {
+    let linkToResultsUrl: string;
+    if (typeof options.linkToResultsUrl === "string") {
+      linkToResultsUrl = options.linkToResultsUrl;
+    } else {
+      linkToResultsUrl = options.linkToResultsUrl();
+    }
+
     adaptiveCard.actions.push({
       type: "Action.OpenUrl",
       title: options.linkToResultsText,
-      url: options.linkToResultsUrl,
+      url: linkToResultsUrl,
     });
   }
 
   if (!isSuccess && options.linkTextOnFailure && options.linkUrlOnFailure) {
+    let linkUrlOnFailure: string;
+    if (typeof options.linkUrlOnFailure === "string") {
+      linkUrlOnFailure = options.linkUrlOnFailure;
+    } else {
+      linkUrlOnFailure = options.linkUrlOnFailure();
+    }
+
     adaptiveCard.actions.push({
       type: "Action.OpenUrl",
       title: options.linkTextOnFailure,
-      url: options.linkUrlOnFailure,
+      url: linkUrlOnFailure,
     });
   }
 

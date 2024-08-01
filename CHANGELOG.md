@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.10]
+
+- [#10](https://github.com/playwright-community/playwright-msteams-reporter/issues/10): Update to the `linkToResultsUrl` and `linkUrlOnFailure` options to support a function that returns the URL
+
 ## [0.0.9]
 
 - [#7](https://github.com/playwright-community/playwright-msteams-reporter/issues/7): Fix for Power Automate webhook URL validation

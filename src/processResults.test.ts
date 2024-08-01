@@ -319,6 +319,32 @@ describe("processResults", () => {
     consoleLogSpy.mockReset();
   });
 
+  it("should include the link from the function", async () => {
+    const fakeLink = "https://github.com/estruyf/playwright-msteams-reporter";
+    const consoleLogSpy = jest
+      .spyOn(console, "log")
+      .mockImplementation((message) => {
+        if (message.includes("message") && message.includes(fakeLink)) {
+          console.log(fakeLink);
+        }
+      });
+    const fetchMock = jest
+      .fn()
+      .mockResolvedValue({ ok: true, text: () => "1" });
+    global.fetch = fetchMock;
+    const options: MsTeamsReporterOptions = {
+      ...DEFAULT_OPTIONS,
+      webhookUrl: FLOW_WEBHOOK_URL,
+      webhookType: "powerautomate",
+      linkToResultsUrl: () => fakeLink,
+      debug: true,
+    };
+    await processResults(SUITE_MOCK_FAILED as any, options);
+    expect(consoleLogSpy).toHaveBeenCalledWith(fakeLink);
+
+    consoleLogSpy.mockReset();
+  });
+
   it("should include the failure link", async () => {
     const fakeFailureLink =
       "https://github.com/estruyf/playwright-msteams-reporter";
@@ -343,6 +369,39 @@ describe("processResults", () => {
       webhookUrl: FLOW_WEBHOOK_URL,
       webhookType: "powerautomate",
       linkUrlOnFailure: fakeFailureLink,
+      linkTextOnFailure: "View the failed tests",
+      debug: true,
+    };
+    await processResults(SUITE_MOCK_FAILED as any, options);
+    expect(consoleLogSpy).toHaveBeenCalledWith(fakeFailureText);
+
+    consoleLogSpy.mockReset();
+  });
+
+  it("should include the failure link from the function", async () => {
+    const fakeFailureLink =
+      "https://github.com/estruyf/playwright-msteams-reporter";
+    const fakeFailureText = "View the failed tests";
+    const consoleLogSpy = jest
+      .spyOn(console, "log")
+      .mockImplementation((message) => {
+        if (
+          message.includes("message") &&
+          message.includes(fakeFailureLink) &&
+          message.includes(fakeFailureText)
+        ) {
+          console.log(fakeFailureText);
+        }
+      });
+    const fetchMock = jest
+      .fn()
+      .mockResolvedValue({ ok: true, text: () => "1" });
+    global.fetch = fetchMock;
+    const options: MsTeamsReporterOptions = {
+      ...DEFAULT_OPTIONS,
+      webhookUrl: FLOW_WEBHOOK_URL,
+      webhookType: "powerautomate",
+      linkUrlOnFailure: () => fakeFailureLink,
       linkTextOnFailure: "View the failed tests",
       debug: true,
     };

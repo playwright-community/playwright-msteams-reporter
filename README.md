@@ -87,9 +87,9 @@ The reporter supports the following configuration options:
 | `webhookUrl` | The Microsoft Teams webhook URL | `boolean` | `true` | `undefined` |
 | `webhookType` | The type of the webhook (`msteams` or `powerautomate`) | `string` | `false` | `powerautomate` |
 | `title` | The notification title | `string` | `false` | `Playwright Test Results` |
-| `linkToResultsUrl` | Link to the test results | `string` | `false` | `undefined` |
+| `linkToResultsUrl` | Link to the test results | `string \| () => string` | `false` | `undefined` |
 | `linkToResultsText` | Text for the link to the test results | `string` | `false` | `View test results` |
-| `linkUrlOnFailure` | Link to page where you can view, trigger, etc. the failed tests | `string` | `false` | `undefined` |
+| `linkUrlOnFailure` | Link to page where you can view, trigger, etc. the failed tests | `string \| () => string` | `false` | `undefined` |
 | `linkTextOnFailure` | Text for the failed tests link action | `string` | `false` | `undefined` |
 | `notifyOnSuccess` | Notify on success | `boolean` | `false` | `true` |
 | `mentionOnFailure` | Mention users on failure (comma separated list) | `string` | `false` | `undefined` |
@@ -143,6 +143,53 @@ With the `linkToResultsUrl` option, you can provide a link to the test results. 
   // The link to your Azure DevOps pipeline run (add &view=artifacts&type=publishedArtifacts to access linked artifacts directly)
   linkToResultsUrl: `${process.env.AZURE_SERVER_URL}/${process.env.AZURE_PROJECT}/_build/results?buildId=${process.env.AZURE_RUN_ID}`,
 }
+```
+
+Make sure to provide the environment variables in your Azure DevOps pipeline:
+
+```yaml
+- script: npx playwright test
+  displayName: "Run Playwright tests"
+  name: "playwright"
+  env:
+    CI: "true"
+    AZURE_SERVER_URL: $(System.CollectionUri)
+    AZURE_PROJECT: $(System.TeamProject)
+    AZURE_RUN_ID: $(Build.BuildId)
+```
+
+### Combine the reporter with the Playwright Azure Reporter
+
+You can combine the Microsoft Teams reporter with the Playwright Azure Reporter to link to create a link to the test plan results on Azure DevOps. The following example shows how you can combine both reporters:
+
+```typescript
+import { defineConfig } from "@playwright/test";
+import type { AzureReporterOptions } from "@alex_neo/playwright-azure-reporter";
+import type { MsTeamsReporterOptions } from "playwright-msteams-reporter";
+
+export default defineConfig({
+  reporter: [
+    ["list"],
+    // First define the Azure reporter
+    [
+      "@alex_neo/playwright-azure-reporter",
+      <AzureReporterOptions>{
+        ...
+      },
+    ],
+    // Then define the Microsoft Teams reporter
+    [
+      'playwright-msteams-reporter',
+      <MsTeamsReporterOptions>{
+        webhookUrl: "<webhookUrl>",
+        // Instead of providing the URL directly, you need to provide a function that returns the URL.
+        // The AZURE_PW_TEST_RUN_ID variable is only available once the Azure reporter has run.
+        linkToResultsUrl: () => `${process.env.AZURE_SERVER_URL}/${process.env.AZURE_PROJECT}/_testManagement/runs?runId=${process.env.AZURE_PW_TEST_RUN_ID}&_a=runCharts`,
+        linkToResultsText: "View test plan results",
+      }
+    ]
+  ]
+});
 ```
 
 Make sure to provide the environment variables in your Azure DevOps pipeline:
