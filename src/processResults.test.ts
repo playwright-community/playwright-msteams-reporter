@@ -345,6 +345,58 @@ describe("processResults", () => {
     consoleLogSpy.mockReset();
   });
 
+  it("should not include the link from the function when not a string (number)", async () => {
+    const fakeLink = 123;
+    const consoleLogSpy = jest
+      .spyOn(console, "log")
+      .mockImplementation((message) => {
+        if (message.includes("message") && !message.includes(fakeLink)) {
+          console.log(`Did not include ${fakeLink}`);
+        }
+      });
+    const fetchMock = jest
+      .fn()
+      .mockResolvedValue({ ok: true, text: () => "1" });
+    global.fetch = fetchMock;
+    const options: MsTeamsReporterOptions = {
+      ...DEFAULT_OPTIONS,
+      webhookUrl: FLOW_WEBHOOK_URL,
+      webhookType: "powerautomate",
+      linkToResultsUrl: (): any => fakeLink,
+      debug: true,
+    };
+    await processResults(SUITE_MOCK_FAILED as any, options);
+    expect(consoleLogSpy).toHaveBeenCalledWith(`Did not include ${fakeLink}`);
+
+    consoleLogSpy.mockReset();
+  });
+
+  it("should not include the link from the function when not a string (undefined)", async () => {
+    const fakeLink = undefined;
+    const consoleLogSpy = jest
+      .spyOn(console, "log")
+      .mockImplementation((message) => {
+        if (message.includes("message") && !message.includes(fakeLink)) {
+          console.log(`Did not include ${fakeLink}`);
+        }
+      });
+    const fetchMock = jest
+      .fn()
+      .mockResolvedValue({ ok: true, text: () => "1" });
+    global.fetch = fetchMock;
+    const options: MsTeamsReporterOptions = {
+      ...DEFAULT_OPTIONS,
+      webhookUrl: FLOW_WEBHOOK_URL,
+      webhookType: "powerautomate",
+      linkToResultsUrl: (): any => fakeLink,
+      debug: true,
+    };
+    await processResults(SUITE_MOCK_FAILED as any, options);
+    expect(consoleLogSpy).toHaveBeenCalledWith(`Did not include ${fakeLink}`);
+
+    consoleLogSpy.mockReset();
+  });
+
   it("should include the failure link", async () => {
     const fakeFailureLink =
       "https://github.com/estruyf/playwright-msteams-reporter";
@@ -407,6 +459,74 @@ describe("processResults", () => {
     };
     await processResults(SUITE_MOCK_FAILED as any, options);
     expect(consoleLogSpy).toHaveBeenCalledWith(fakeFailureText);
+
+    consoleLogSpy.mockReset();
+  });
+
+  it("should not include the failure link from the function when not a string (number)", async () => {
+    const fakeFailureLink = 123;
+    const fakeFailureText = "View the failed tests";
+    const consoleLogSpy = jest
+      .spyOn(console, "log")
+      .mockImplementation((message) => {
+        if (
+          message.includes("message") &&
+          !message.includes(fakeFailureLink) &&
+          !message.includes(fakeFailureText)
+        ) {
+          console.log(`Did not include ${fakeFailureLink}`);
+        }
+      });
+    const fetchMock = jest
+      .fn()
+      .mockResolvedValue({ ok: true, text: () => "1" });
+    global.fetch = fetchMock;
+    const options: MsTeamsReporterOptions = {
+      ...DEFAULT_OPTIONS,
+      webhookUrl: FLOW_WEBHOOK_URL,
+      webhookType: "powerautomate",
+      linkUrlOnFailure: (): any => fakeFailureLink,
+      linkTextOnFailure: "View the failed tests",
+      debug: true,
+    };
+    await processResults(SUITE_MOCK_FAILED as any, options);
+    expect(consoleLogSpy).toHaveBeenCalledWith(
+      `Did not include ${fakeFailureLink}`
+    );
+
+    consoleLogSpy.mockReset();
+  });
+
+  it("should not include the failure link from the function when not a string (undefined)", async () => {
+    const fakeFailureLink = undefined;
+    const fakeFailureText = "View the failed tests";
+    const consoleLogSpy = jest
+      .spyOn(console, "log")
+      .mockImplementation((message) => {
+        if (
+          message.includes("message") &&
+          !message.includes(fakeFailureLink) &&
+          !message.includes(fakeFailureText)
+        ) {
+          console.log(`Did not include ${fakeFailureLink}`);
+        }
+      });
+    const fetchMock = jest
+      .fn()
+      .mockResolvedValue({ ok: true, text: () => "1" });
+    global.fetch = fetchMock;
+    const options: MsTeamsReporterOptions = {
+      ...DEFAULT_OPTIONS,
+      webhookUrl: FLOW_WEBHOOK_URL,
+      webhookType: "powerautomate",
+      linkUrlOnFailure: (): any => fakeFailureLink,
+      linkTextOnFailure: "View the failed tests",
+      debug: true,
+    };
+    await processResults(SUITE_MOCK_FAILED as any, options);
+    expect(consoleLogSpy).toHaveBeenCalledWith(
+      `Did not include ${fakeFailureLink}`
+    );
 
     consoleLogSpy.mockReset();
   });

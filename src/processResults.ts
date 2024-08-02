@@ -146,11 +146,13 @@ export const processResults = async (
       linkToResultsUrl = options.linkToResultsUrl();
     }
 
-    adaptiveCard.actions.push({
-      type: "Action.OpenUrl",
-      title: options.linkToResultsText,
-      url: linkToResultsUrl,
-    });
+    if (linkToResultsUrl && typeof linkToResultsUrl === "string") {
+      adaptiveCard.actions.push({
+        type: "Action.OpenUrl",
+        title: options.linkToResultsText,
+        url: linkToResultsUrl,
+      });
+    }
   }
 
   if (!isSuccess && options.linkTextOnFailure && options.linkUrlOnFailure) {
@@ -161,11 +163,13 @@ export const processResults = async (
       linkUrlOnFailure = options.linkUrlOnFailure();
     }
 
-    adaptiveCard.actions.push({
-      type: "Action.OpenUrl",
-      title: options.linkTextOnFailure,
-      url: linkUrlOnFailure,
-    });
+    if (linkUrlOnFailure && typeof linkUrlOnFailure === "string") {
+      adaptiveCard.actions.push({
+        type: "Action.OpenUrl",
+        title: options.linkTextOnFailure,
+        url: linkUrlOnFailure,
+      });
+    }
   }
 
   if (options.webhookType === "powerautomate") {
