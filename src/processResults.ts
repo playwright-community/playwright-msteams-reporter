@@ -139,19 +139,37 @@ export const processResults = async (
 
   // Get the github actions run URL
   if (options.linkToResultsUrl) {
-    adaptiveCard.actions.push({
-      type: "Action.OpenUrl",
-      title: options.linkToResultsText,
-      url: options.linkToResultsUrl,
-    });
+    let linkToResultsUrl: string;
+    if (typeof options.linkToResultsUrl === "string") {
+      linkToResultsUrl = options.linkToResultsUrl;
+    } else {
+      linkToResultsUrl = options.linkToResultsUrl();
+    }
+
+    if (linkToResultsUrl && typeof linkToResultsUrl === "string") {
+      adaptiveCard.actions.push({
+        type: "Action.OpenUrl",
+        title: options.linkToResultsText,
+        url: linkToResultsUrl,
+      });
+    }
   }
 
   if (!isSuccess && options.linkTextOnFailure && options.linkUrlOnFailure) {
-    adaptiveCard.actions.push({
-      type: "Action.OpenUrl",
-      title: options.linkTextOnFailure,
-      url: options.linkUrlOnFailure,
-    });
+    let linkUrlOnFailure: string;
+    if (typeof options.linkUrlOnFailure === "string") {
+      linkUrlOnFailure = options.linkUrlOnFailure;
+    } else {
+      linkUrlOnFailure = options.linkUrlOnFailure();
+    }
+
+    if (linkUrlOnFailure && typeof linkUrlOnFailure === "string") {
+      adaptiveCard.actions.push({
+        type: "Action.OpenUrl",
+        title: options.linkTextOnFailure,
+        url: linkUrlOnFailure,
+      });
+    }
   }
 
   if (options.webhookType === "powerautomate") {

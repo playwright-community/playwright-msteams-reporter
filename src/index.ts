@@ -13,9 +13,9 @@ export interface MsTeamsReporterOptions {
   webhookUrl?: string;
   webhookType?: WebhookType;
   title?: string;
-  linkToResultsUrl?: string;
+  linkToResultsUrl?: string | (() => string);
   linkToResultsText?: string;
-  linkUrlOnFailure?: string;
+  linkUrlOnFailure?: string | (() => string);
   linkTextOnFailure?: string;
   notifyOnSuccess?: boolean;
   mentionOnFailure?: string;
