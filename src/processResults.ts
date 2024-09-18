@@ -30,6 +30,8 @@ export const processResults = async (
     return;
   }
 
+  if (!suite.suites[0].project()?.name.includes('_jenkins')) return
+
   // Clone the base adaptive card and table
   const adaptiveCard = structuredClone(BaseAdaptiveCard);
   const table = structuredClone(BaseTable);
