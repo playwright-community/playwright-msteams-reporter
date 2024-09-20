@@ -18,7 +18,7 @@ Here you can see an example card for failed test results:
 
 To use this reporter, you must have a Microsoft Teams webhook URL. You can create a webhook URL using the Microsoft Teams Power Automate connector or the Microsoft Teams incoming webhook functionality.
 
-As the incoming webhook functionality will stop working on October 1, 2024, it is recommended to use the Power Automate connector functionality.
+As the incoming webhook functionality will stop working on October 1, 2024 (extended to December 2025), it is recommended to use the Power Automate connector functionality.
 
 > **Important**: You need to copy the `webhook URL` from the configuration, as you will need it to configure the reporter.
 
@@ -39,6 +39,11 @@ To create a Power Automate webhook for Microsoft Teams, you can follow these ste
 
 - Click on the **Save** button
 - Click on **When a Teams webhook request is received** and copy the **HTTP URL**
+
+> [!WARNING]
+> When using the PowerAutomate template, a template footer will automatically be included like: `<name> used a Workflow template to send this card. Get template`.
+> You can remove this footer by creating a copy of the flow, and use the new one instead.
+> You can find more information about this procedure in the following blog post: [How to remove "<Name> used a Workflow template to send this card. Get template"](https://docs.hetrixtools.com/microsoft-teams-how-to-remove-name-used-a-workflow-template-to-send-this-card-get-template/).
 
 ### Microsoft Teams incoming webhook (retiring October 1, 2024)
 
