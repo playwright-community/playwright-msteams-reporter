@@ -102,6 +102,7 @@ The reporter supports the following configuration options:
 | `enableEmoji` | Show an emoji based on the test status | `boolean` | `false` | `false` |
 | `quiet` | Do not show any output in the console | `boolean` | `false` | `false` |
 | `debug` | Show debug information | `boolean` | `false` | `false` |
+| `shouldRun` | A function that determine whether the reporter has to run or not | `boolean` | `false` | `true` |
 
 ### Mention users
 
