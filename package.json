@@ -1,17 +1,21 @@
 {
-  "name": "playwright-msteams-reporter-conditional",
-  "version": "0.0.1",
+  "name": "playwright-msteams-reporter",
+  "version": "0.0.11",
   "description": "Microsoft Teams reporter for Playwright which allows you to send notifications about the status of your E2E tests.",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
-    "test": "npx playwright test",
+    "test": "NODE_ENV=development npx playwright test",
     "test:jest": "jest --coverage --coverageDirectory=../coverage"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:siteriaitaliana/playwright-msteams-reporter.git"
+    "url": "git+https://github.com/playwright-community/playwright-msteams-reporter.git"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/estruyf"
   },
   "keywords": [
     "playwright",
@@ -21,12 +25,12 @@
     "e2e",
     "testing"
   ],
-  "author": "Lorenzo Urbini <urbini.lorenzo@gmail.com>",
+  "author": "Elio Struyf <elio@struyfconsulting.be>",
   "license": "MIT",
   "bugs": {
-    "url": "git@github.com:siteriaitaliana/playwright-msteams-reporter.git/issues"
+    "url": "https://github.com/playwright-community/playwright-msteams-reporter/issues"
   },
-  "homepage": "git@github.com:siteriaitaliana/playwright-msteams-reporter.git#readme",
+  "homepage": "https://github.com/playwright-community/playwright-msteams-reporter#readme",
   "devDependencies": {
     "@playwright/test": "^1.45.0",
     "@tsconfig/recommended": "^1.0.7",
