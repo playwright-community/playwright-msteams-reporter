@@ -15,6 +15,7 @@ const DEFAULT_OPTIONS: MsTeamsReporterOptions = {
   mentionOnFailureText: "{mentions} please validate the test results.",
   quiet: false,
   debug: false,
+  shouldRun: () => true
 };
 
 const SUITE_MOCK_PASSED = {
@@ -119,6 +120,23 @@ describe("processResults", () => {
     expect(consoleLogSpy).toHaveBeenCalledWith(
       "No failed tests, skipping notification"
     );
+
+    consoleLogSpy.mockReset();
+  });
+
+  it("should return early if shouldRun is false", async () => {
+    const consoleLogSpy = jest.spyOn(console, "log").mockImplementation();
+
+    const fetchMock = jest.fn();
+    global.fetch = fetchMock;
+    const options = {
+      ...DEFAULT_OPTIONS,
+      webhookUrl: undefined,
+      shouldRun: () => false
+    };
+    await processResults(undefined, options);
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(consoleLogSpy).not.toHaveBeenCalled();
 
     consoleLogSpy.mockReset();
   });
