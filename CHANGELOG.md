@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.11]
+
+- [#15](https://github.com/playwright-community/playwright-msteams-reporter/pull/15): New option `shouldRun` to control when to report based on suite values
+
 ## [0.0.10]
 
 - [#10](https://github.com/playwright-community/playwright-msteams-reporter/issues/10): Update to the `linkToResultsUrl` and `linkUrlOnFailure` options to support a function that returns the URL
