@@ -102,6 +102,7 @@ The reporter supports the following configuration options:
 | `enableEmoji` | Show an emoji based on the test status | `boolean` | `false` | `false` |
 | `quiet` | Do not show any output in the console | `boolean` | `false` | `false` |
 | `debug` | Show debug information | `boolean` | `false` | `false` |
+| `shouldRun` | Conditional reporting | ` Suite => boolean` | `false` | `true` |
 
 ### Mention users
 
@@ -132,6 +133,17 @@ The format can be either the full name and email (`"Full name <email>"`) or just
 ### Link to the results
 
 With the `linkToResultsUrl` option, you can provide a link to the test results. For example, you can view the test results on your CI/CD platform.
+
+### Conditional reporting (shouldRun)
+
+Example (report only from jenkins runs - project name set as 'dev__jenkins'):
+```javascript
+  shouldRun: (suite) => {
+    if (suite.suites[0].project()?.name.includes('_jenkins')) return true
+
+    return false
+  }
+```
 
 #### Github
 

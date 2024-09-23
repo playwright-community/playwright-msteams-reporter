@@ -30,6 +30,8 @@ export const processResults = async (
     return;
   }
 
+  if (options.shouldRun && !options?.shouldRun(suite)) return
+
   // Clone the base adaptive card and table
   const adaptiveCard = structuredClone(BaseAdaptiveCard);
   const table = structuredClone(BaseTable);

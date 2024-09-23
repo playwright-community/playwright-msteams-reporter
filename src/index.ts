@@ -23,6 +23,7 @@ export interface MsTeamsReporterOptions {
   enableEmoji?: boolean;
   quiet?: boolean;
   debug?: boolean;
+  shouldRun?: ((suite: Suite) => boolean);
 }
 
 export default class MsTeamsReporter implements Reporter {
@@ -41,6 +42,7 @@ export default class MsTeamsReporter implements Reporter {
       enableEmoji: false,
       quiet: false,
       debug: false,
+      shouldRun: () => true
     };
 
     this.options = { ...defaultOptions, ...options };
