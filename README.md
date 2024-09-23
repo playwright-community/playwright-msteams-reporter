@@ -18,7 +18,7 @@ Here you can see an example card for failed test results:
 
 To use this reporter, you must have a Microsoft Teams webhook URL. You can create a webhook URL using the Microsoft Teams Power Automate connector or the Microsoft Teams incoming webhook functionality.
 
-As the incoming webhook functionality will stop working on October 1, 2024, it is recommended to use the Power Automate connector functionality.
+As the incoming webhook functionality will stop working on October 1, 2024 (extended to December 2025), it is recommended to use the Power Automate connector functionality.
 
 > **Important**: You need to copy the `webhook URL` from the configuration, as you will need it to configure the reporter.
 
@@ -39,6 +39,11 @@ To create a Power Automate webhook for Microsoft Teams, you can follow these ste
 
 - Click on the **Save** button
 - Click on **When a Teams webhook request is received** and copy the **HTTP URL**
+
+> [!WARNING]
+> When using the PowerAutomate template, a template footer will automatically be included like: `<name> used a Workflow template to send this card. Get template`.
+> You can remove this footer by creating a copy of the flow, and use the new one instead.
+> You can find more information about this procedure in the following blog post: [How to remove "<Name> used a Workflow template to send this card. Get template"](https://docs.hetrixtools.com/microsoft-teams-how-to-remove-name-used-a-workflow-template-to-send-this-card-get-template/).
 
 ### Microsoft Teams incoming webhook (retiring October 1, 2024)
 
@@ -97,6 +102,7 @@ The reporter supports the following configuration options:
 | `enableEmoji` | Show an emoji based on the test status | `boolean` | `false` | `false` |
 | `quiet` | Do not show any output in the console | `boolean` | `false` | `false` |
 | `debug` | Show debug information | `boolean` | `false` | `false` |
+| `shouldRun` | Conditional reporting | ` Suite => boolean` | `false` | `true` |
 
 ### Mention users
 
@@ -127,6 +133,17 @@ The format can be either the full name and email (`"Full name <email>"`) or just
 ### Link to the results
 
 With the `linkToResultsUrl` option, you can provide a link to the test results. For example, you can view the test results on your CI/CD platform.
+
+### Conditional reporting (shouldRun)
+
+Example (report only from jenkins runs - project name set as 'dev__jenkins'):
+```javascript
+  shouldRun: (suite) => {
+    if (suite.suites[0].project()?.name.includes('_jenkins')) return true
+
+    return false
+  }
+```
 
 #### Github
 

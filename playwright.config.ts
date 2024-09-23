@@ -30,6 +30,7 @@ const config: PlaywrightTestConfig<{}, {}> = {
         mentionOnFailureText: "",
         enableEmoji: false,
         debug: true,
+        shouldRun: () => true,
       },
     ],
   ],
