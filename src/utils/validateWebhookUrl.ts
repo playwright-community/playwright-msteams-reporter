@@ -23,7 +23,7 @@ export const validateWebhookUrl = (
   } else if (type === "msteams") {
     // https://tenant.webhook.office.com/webhookb2/{uuid}@{uuid}/IncomingWebhook/{id}/{uuid}
     const webhook_pattern =
-      /^https:\/\/[a-zA-Z]+.webhook.office.com\/webhookb2\/[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?\S+\/IncomingWebhook\/[a-zA-Z0-9]+\/[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?/;
+      /^https:\/\/[a-zA-Z0-9]+.webhook.office.com\/webhookb2\/[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?\S+\/IncomingWebhook\/[a-zA-Z0-9]+\/[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?/;
 
     return webhook_pattern.test(webhookUrl);
   } else {
