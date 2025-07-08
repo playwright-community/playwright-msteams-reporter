@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## [0.0.13]
 
+- [#23](https://github.com/playwright-community/playwright-msteams-reporter/issues/23): Added the `enableDuration` option to show the test run duration in the report
 - [#24](https://github.com/playwright-community/playwright-msteams-reporter/issues/24): Added the `reportOnEmpty` option to control whether to report when no tests are found
 - [#25](https://github.com/playwright-community/playwright-msteams-reporter/issues/25): Removed the webhook URL validation as it keeps changing format
 

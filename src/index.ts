@@ -25,10 +25,12 @@ export interface MsTeamsReporterOptions {
   debug?: boolean;
   shouldRun?: (suite: Suite) => boolean;
   reportOnEmpty?: boolean;
+  enableDuration?: boolean;
 }
 
 export default class MsTeamsReporter implements Reporter {
   private suite: Suite | undefined;
+  private startTime: number | undefined;
 
   constructor(private options: MsTeamsReporterOptions) {
     const defaultOptions: MsTeamsReporterOptions = {
@@ -45,6 +47,7 @@ export default class MsTeamsReporter implements Reporter {
       debug: false,
       shouldRun: () => true,
       reportOnEmpty: false,
+      enableDuration: false,
     };
 
     this.options = { ...defaultOptions, ...options };
@@ -59,6 +62,9 @@ export default class MsTeamsReporter implements Reporter {
 
   onBegin(_: FullConfig, suite: Suite) {
     this.suite = suite;
+    if (this.options.enableDuration) {
+      this.startTime = Date.now();
+    }
   }
 
   onStdOut(
@@ -84,6 +90,10 @@ export default class MsTeamsReporter implements Reporter {
   }
 
   async onEnd(_: FullResult) {
-    await processResults(this.suite, this.options);
+    let durationMs: number | undefined = undefined;
+    if (this.options.enableDuration && this.startTime) {
+      durationMs = Date.now() - this.startTime;
+    }
+    await processResults(this.suite, this.options, durationMs);
   }
 }

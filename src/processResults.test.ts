@@ -586,4 +586,38 @@ describe("processResults", () => {
     await processResults(emptySuite as any, options);
     expect(fetchMock).toHaveBeenCalled();
   });
+
+  it("should include duration in the report when enableDuration is true", async () => {
+    const fetchMock = jest
+      .fn()
+      .mockResolvedValue({ ok: true, text: () => "1" });
+    global.fetch = fetchMock;
+    const options: MsTeamsReporterOptions = {
+      ...DEFAULT_OPTIONS,
+      webhookUrl: MSTEAMS_WEBHOOK_URL,
+      enableDuration: true,
+    };
+    const suite = SUITE_MOCK_PASSED as any;
+    const durationMs = 125000; // 2m 5s
+    await processResults(suite, options, durationMs);
+    const body = fetchMock.mock.calls[0][1].body;
+    expect(body).toContain("2m 5s");
+  });
+
+  it("should not include duration in the report when enableDuration is false", async () => {
+    const fetchMock = jest
+      .fn()
+      .mockResolvedValue({ ok: true, text: () => "1" });
+    global.fetch = fetchMock;
+    const options: MsTeamsReporterOptions = {
+      ...DEFAULT_OPTIONS,
+      webhookUrl: MSTEAMS_WEBHOOK_URL,
+      enableDuration: false,
+    };
+    const suite = SUITE_MOCK_PASSED as any;
+    const durationMs = 125000; // 2m 5s
+    await processResults(suite, options, durationMs);
+    const body = fetchMock.mock.calls[0][1].body;
+    expect(body).not.toContain("2m 5s");
+  });
 });

@@ -12,7 +12,8 @@ import { BaseAdaptiveCard, BaseTable } from "./constants";
 
 export const processResults = async (
   suite: Suite | undefined,
-  options: MsTeamsReporterOptions
+  options: MsTeamsReporterOptions,
+  durationMs?: number
 ) => {
   if (!options.webhookUrl) {
     console.error("No webhook URL provided");
@@ -86,6 +87,20 @@ export const processResults = async (
       weight: "Bolder",
     })
   );
+
+  // Add duration if enabled
+  if (options.enableDuration && typeof durationMs === "number") {
+    const seconds = Math.round(durationMs / 1000);
+    const min = Math.floor(seconds / 60);
+    const sec = seconds % 60;
+    const durationStr = min > 0 ? `${min}m ${sec}s` : `${sec}s`;
+    table.rows.push(
+      createTableRow("Duration", durationStr, {
+        isSubtle: true,
+        weight: "Bolder",
+      })
+    );
+  }
 
   const container = {
     type: "Container",

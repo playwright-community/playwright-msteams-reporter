@@ -104,6 +104,7 @@ The reporter supports the following configuration options:
 | `debug`                | Show debug information                                          | `boolean`                | `false`  | `false`                                        |
 | `shouldRun`            | Conditional reporting                                           | ` Suite => boolean`      | `false`  | `true`                                         |
 | `reportOnEmpty`        | Prevents sending a report when no tests are run                 | `boolean`                | `false`  | `false`                                        |
+| `enableDuration`       | Show the test run duration                                      | `boolean`                | `false`  | `false`                                        |
 
 ### Mention users
 
