@@ -105,6 +105,7 @@ The reporter supports the following configuration options:
 | `shouldRun`            | Conditional reporting                                           | ` Suite => boolean`      | `false`  | `true`                                         |
 | `reportOnEmpty`        | Prevents sending a report when no tests are run                 | `boolean`                | `false`  | `false`                                        |
 | `enableDuration`       | Show the test run duration                                      | `boolean`                | `false`  | `false`                                        |
+| `mentionAuthors`       | Use git metadata to mention authors of the commit or PR         | `boolean`                | `false`  | `false`                                        |
 
 ### Mention users
 

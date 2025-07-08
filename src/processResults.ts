@@ -13,7 +13,8 @@ import { BaseAdaptiveCard, BaseTable } from "./constants";
 export const processResults = async (
   suite: Suite | undefined,
   options: MsTeamsReporterOptions,
-  durationMs?: number
+  durationMs?: number,
+  gitAuthors?: string[]
 ) => {
   if (!options.webhookUrl) {
     console.error("No webhook URL provided");
@@ -128,9 +129,13 @@ export const processResults = async (
   };
 
   // Check if we should ping on failure
+  let mentionEmails = options.mentionOnFailure;
+  if (options.mentionAuthors && gitAuthors && gitAuthors.length > 0) {
+    mentionEmails = gitAuthors.join(",");
+  }
   if (!isSuccess) {
     const mentionData = getMentions(
-      options.mentionOnFailure,
+      mentionEmails,
       options.mentionOnFailureText
     );
     if (mentionData?.message && mentionData.mentions.length > 0) {
