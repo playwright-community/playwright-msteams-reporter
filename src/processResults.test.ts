@@ -15,7 +15,7 @@ const DEFAULT_OPTIONS: MsTeamsReporterOptions = {
   mentionOnFailureText: "{mentions} please validate the test results.",
   quiet: false,
   debug: false,
-  shouldRun: () => true
+  shouldRun: () => true,
 };
 
 const SUITE_MOCK_PASSED = {
@@ -79,18 +79,6 @@ describe("processResults", () => {
     consoleErrorSpy.mockReset();
   });
 
-  it("should return early if an invalid webhook URL is provided", async () => {
-    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation();
-    const options = {
-      ...DEFAULT_OPTIONS,
-      webhookUrl: "invalid-url",
-    };
-    await processResults(undefined, options);
-    expect(consoleErrorSpy).toHaveBeenCalledWith("Invalid webhook URL");
-
-    consoleErrorSpy.mockReset();
-  });
-
   it("should return early if no test suite is found", async () => {
     const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation();
     const options: MsTeamsReporterOptions = {
@@ -118,7 +106,7 @@ describe("processResults", () => {
     };
     await processResults(suite, options);
     expect(consoleLogSpy).toHaveBeenCalledWith(
-      "No failed tests, skipping notification"
+      "No tests found, skipping report (reportOnEmpty is false)"
     );
 
     consoleLogSpy.mockReset();
@@ -132,7 +120,7 @@ describe("processResults", () => {
     const options = {
       ...DEFAULT_OPTIONS,
       webhookUrl: undefined,
-      shouldRun: () => false
+      shouldRun: () => false,
     };
     await processResults(undefined, options);
     expect(fetchMock).not.toHaveBeenCalled();
@@ -567,5 +555,35 @@ describe("processResults", () => {
     );
 
     consoleLogSpy.mockReset();
+  });
+
+  it("should not send a report when reportOnEmpty is false and there are no tests", async () => {
+    const consoleLogSpy = jest.spyOn(console, "log").mockImplementation();
+    const options: MsTeamsReporterOptions = {
+      ...DEFAULT_OPTIONS,
+      webhookUrl: MSTEAMS_WEBHOOK_URL,
+      reportOnEmpty: false,
+    };
+    const emptySuite = { allTests: () => [], suites: [] };
+    await processResults(emptySuite as any, options);
+    expect(consoleLogSpy).toHaveBeenCalledWith(
+      "No tests found, skipping report (reportOnEmpty is false)"
+    );
+    consoleLogSpy.mockReset();
+  });
+
+  it("should send a report when reportOnEmpty is true and there are no tests", async () => {
+    const fetchMock = jest
+      .fn()
+      .mockResolvedValue({ ok: true, text: () => "1" });
+    global.fetch = fetchMock;
+    const options: MsTeamsReporterOptions = {
+      ...DEFAULT_OPTIONS,
+      webhookUrl: MSTEAMS_WEBHOOK_URL,
+      reportOnEmpty: true,
+    };
+    const emptySuite = { allTests: () => [], suites: [] };
+    await processResults(emptySuite as any, options);
+    expect(fetchMock).toHaveBeenCalled();
   });
 });

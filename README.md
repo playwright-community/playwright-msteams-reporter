@@ -35,7 +35,7 @@ To create a Power Automate webhook for Microsoft Teams, you can follow these ste
   - **Team**: Select the team where you want to post the message
   - **Channel**: Select the channel where you want to post the message
 
- ![Power Automate connector configuration](./assets/powerautomate-settings.png)
+![Power Automate connector configuration](./assets/powerautomate-settings.png)
 
 - Click on the **Save** button
 - Click on **When a Teams webhook request is received** and copy the **HTTP URL**
@@ -87,22 +87,23 @@ export default defineConfig({
 
 The reporter supports the following configuration options:
 
-| Option | Description | Type | Required | Default |
-| --- | --- | --- | --- | --- |
-| `webhookUrl` | The Microsoft Teams webhook URL | `boolean` | `true` | `undefined` |
-| `webhookType` | The type of the webhook (`msteams` or `powerautomate`) | `string` | `false` | `powerautomate` |
-| `title` | The notification title | `string` | `false` | `Playwright Test Results` |
-| `linkToResultsUrl` | Link to the test results | `string \| () => string` | `false` | `undefined` |
-| `linkToResultsText` | Text for the link to the test results | `string` | `false` | `View test results` |
-| `linkUrlOnFailure` | Link to page where you can view, trigger, etc. the failed tests | `string \| () => string` | `false` | `undefined` |
-| `linkTextOnFailure` | Text for the failed tests link action | `string` | `false` | `undefined` |
-| `notifyOnSuccess` | Notify on success | `boolean` | `false` | `true` |
-| `mentionOnFailure` | Mention users on failure (comma separated list) | `string` | `false` | `undefined` |
-| `mentionOnFailureText` | Text to mention users on failure | `string` | `false` | `{mentions} please validate the test results.` |
-| `enableEmoji` | Show an emoji based on the test status | `boolean` | `false` | `false` |
-| `quiet` | Do not show any output in the console | `boolean` | `false` | `false` |
-| `debug` | Show debug information | `boolean` | `false` | `false` |
-| `shouldRun` | Conditional reporting | ` Suite => boolean` | `false` | `true` |
+| Option                 | Description                                                     | Type                     | Required | Default                                        |
+| ---------------------- | --------------------------------------------------------------- | ------------------------ | -------- | ---------------------------------------------- |
+| `webhookUrl`           | The Microsoft Teams webhook URL                                 | `boolean`                | `true`   | `undefined`                                    |
+| `webhookType`          | The type of the webhook (`msteams` or `powerautomate`)          | `string`                 | `false`  | `powerautomate`                                |
+| `title`                | The notification title                                          | `string`                 | `false`  | `Playwright Test Results`                      |
+| `linkToResultsUrl`     | Link to the test results                                        | `string \| () => string` | `false`  | `undefined`                                    |
+| `linkToResultsText`    | Text for the link to the test results                           | `string`                 | `false`  | `View test results`                            |
+| `linkUrlOnFailure`     | Link to page where you can view, trigger, etc. the failed tests | `string \| () => string` | `false`  | `undefined`                                    |
+| `linkTextOnFailure`    | Text for the failed tests link action                           | `string`                 | `false`  | `undefined`                                    |
+| `notifyOnSuccess`      | Notify on success                                               | `boolean`                | `false`  | `true`                                         |
+| `mentionOnFailure`     | Mention users on failure (comma separated list)                 | `string`                 | `false`  | `undefined`                                    |
+| `mentionOnFailureText` | Text to mention users on failure                                | `string`                 | `false`  | `{mentions} please validate the test results.` |
+| `enableEmoji`          | Show an emoji based on the test status                          | `boolean`                | `false`  | `false`                                        |
+| `quiet`                | Do not show any output in the console                           | `boolean`                | `false`  | `false`                                        |
+| `debug`                | Show debug information                                          | `boolean`                | `false`  | `false`                                        |
+| `shouldRun`            | Conditional reporting                                           | ` Suite => boolean`      | `false`  | `true`                                         |
+| `reportOnEmpty`        | Prevents sending a report when no tests are run                 | `boolean`                | `false`  | `false`                                        |
 
 ### Mention users
 
@@ -136,13 +137,14 @@ With the `linkToResultsUrl` option, you can provide a link to the test results. 
 
 ### Conditional reporting (shouldRun)
 
-Example (report only from jenkins runs - project name set as 'dev__jenkins'):
-```javascript
-  shouldRun: (suite) => {
-    if (suite.suites[0].project()?.name.includes('_jenkins')) return true
+Example (report only from jenkins runs - project name set as 'dev\_\_jenkins'):
 
-    return false
-  }
+```javascript
+shouldRun: (suite) => {
+  if (suite.suites[0].project()?.name.includes("_jenkins")) return true;
+
+  return false;
+};
 ```
 
 #### Github
@@ -153,6 +155,7 @@ Example (report only from jenkins runs - project name set as 'dev__jenkins'):
   linkToResultsUrl: `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`,
 }
 ```
+
 #### Azure Devops
 
 ```javascript

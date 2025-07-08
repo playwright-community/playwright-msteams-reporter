@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## [0.0.13]
 
+- [#24](https://github.com/playwright-community/playwright-msteams-reporter/issues/24): Added the `reportOnEmpty` option to control whether to report when no tests are found
 - [#25](https://github.com/playwright-community/playwright-msteams-reporter/issues/25): Removed the webhook URL validation as it keeps changing format
 
 ## [0.0.12]

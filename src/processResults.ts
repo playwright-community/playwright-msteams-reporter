@@ -26,12 +26,19 @@ export const processResults = async (
 
   if (options.shouldRun && !options?.shouldRun(suite)) return;
 
+  const totalTests = suite.allTests().length;
+  if (!options.reportOnEmpty && totalTests === 0) {
+    if (!options.quiet) {
+      console.log("No tests found, skipping report (reportOnEmpty is false)");
+    }
+    return;
+  }
+
   // Clone the base adaptive card and table
   const adaptiveCard = structuredClone(BaseAdaptiveCard);
   const table = structuredClone(BaseTable);
 
   const totalStatus = getTotalStatus(suite.suites);
-  const totalTests = suite.allTests().length;
   const isSuccess = totalStatus.failed === 0;
 
   if (isSuccess && !options.notifyOnSuccess) {
