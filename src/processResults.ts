@@ -7,7 +7,6 @@ import {
   getNotificationColor,
   getNotificationTitle,
   getTotalStatus,
-  validateWebhookUrl,
 } from "./utils";
 import { BaseAdaptiveCard, BaseTable } from "./constants";
 
@@ -20,17 +19,12 @@ export const processResults = async (
     return;
   }
 
-  if (!validateWebhookUrl(options.webhookUrl, options.webhookType)) {
-    console.error("Invalid webhook URL");
-    return;
-  }
-
   if (!suite) {
     console.error("No test suite found");
     return;
   }
 
-  if (options.shouldRun && !options?.shouldRun(suite)) return
+  if (options.shouldRun && !options?.shouldRun(suite)) return;
 
   // Clone the base adaptive card and table
   const adaptiveCard = structuredClone(BaseAdaptiveCard);

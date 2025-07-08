@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.13]
+
+- [#25](https://github.com/playwright-community/playwright-msteams-reporter/issues/25): Removed the webhook URL validation as it keeps changing format
+
 ## [0.0.12]
 
 - [#18](https://github.com/playwright-community/playwright-msteams-reporter/issues/18): Fix issue in MS Teams webhook URL validation
