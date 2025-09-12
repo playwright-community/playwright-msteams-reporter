@@ -23,11 +23,16 @@ export interface MsTeamsReporterOptions {
   enableEmoji?: boolean;
   quiet?: boolean;
   debug?: boolean;
-  shouldRun?: ((suite: Suite) => boolean);
+  shouldRun?: (suite: Suite) => boolean;
+  reportOnEmpty?: boolean;
+  enableDuration?: boolean;
+  mentionAuthors?: boolean;
 }
 
 export default class MsTeamsReporter implements Reporter {
   private suite: Suite | undefined;
+  private startTime: number | undefined;
+  private gitAuthors: string[] | undefined;
 
   constructor(private options: MsTeamsReporterOptions) {
     const defaultOptions: MsTeamsReporterOptions = {
@@ -42,7 +47,10 @@ export default class MsTeamsReporter implements Reporter {
       enableEmoji: false,
       quiet: false,
       debug: false,
-      shouldRun: () => true
+      shouldRun: () => true,
+      reportOnEmpty: false,
+      enableDuration: false,
+      mentionAuthors: false,
     };
 
     this.options = { ...defaultOptions, ...options };
@@ -55,8 +63,26 @@ export default class MsTeamsReporter implements Reporter {
     }
   }
 
-  onBegin(_: FullConfig, suite: Suite) {
+  onBegin(config: FullConfig, suite: Suite) {
     this.suite = suite;
+    if (this.options.enableDuration) {
+      this.startTime = Date.now();
+    }
+    // Capture git authors from metadata if enabled
+    if (this.options.mentionAuthors && config?.metadata?.git) {
+      // Playwright 1.51+ git metadata
+      const authors: string[] = [];
+      if (Array.isArray(config.metadata.git.commits)) {
+        for (const commit of config.metadata.git.commits) {
+          if (commit.author && commit.author.email) {
+            authors.push(commit.author.email);
+          }
+        }
+      } else if (config.metadata.git.commit?.author?.email) {
+        authors.push(config.metadata.git.commit.author.email);
+      }
+      this.gitAuthors = Array.from(new Set(authors));
+    }
   }
 
   onStdOut(
@@ -82,6 +108,10 @@ export default class MsTeamsReporter implements Reporter {
   }
 
   async onEnd(_: FullResult) {
-    await processResults(this.suite, this.options);
+    let durationMs: number | undefined = undefined;
+    if (this.options.enableDuration && this.startTime) {
+      durationMs = Date.now() - this.startTime;
+    }
+    await processResults(this.suite, this.options, durationMs, this.gitAuthors);
   }
 }

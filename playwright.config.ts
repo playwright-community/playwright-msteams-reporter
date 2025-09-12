@@ -31,6 +31,7 @@ const config: PlaywrightTestConfig<{}, {}> = {
         enableEmoji: false,
         debug: true,
         shouldRun: () => true,
+        enableDuration: true,
       },
     ],
   ],

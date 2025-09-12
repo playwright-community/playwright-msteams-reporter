@@ -5,4 +5,3 @@ export * from "./getNotificationColor";
 export * from "./getNotificationOutcome";
 export * from "./getNotificationTitle";
 export * from "./getTotalStatus";
-export * from "./validateWebhookUrl";

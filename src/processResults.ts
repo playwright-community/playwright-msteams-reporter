@@ -7,21 +7,17 @@ import {
   getNotificationColor,
   getNotificationTitle,
   getTotalStatus,
-  validateWebhookUrl,
 } from "./utils";
 import { BaseAdaptiveCard, BaseTable } from "./constants";
 
 export const processResults = async (
   suite: Suite | undefined,
-  options: MsTeamsReporterOptions
+  options: MsTeamsReporterOptions,
+  durationMs?: number,
+  gitAuthors?: string[]
 ) => {
   if (!options.webhookUrl) {
     console.error("No webhook URL provided");
-    return;
-  }
-
-  if (!validateWebhookUrl(options.webhookUrl, options.webhookType)) {
-    console.error("Invalid webhook URL");
     return;
   }
 
@@ -30,14 +26,21 @@ export const processResults = async (
     return;
   }
 
-  if (options.shouldRun && !options?.shouldRun(suite)) return
+  if (options.shouldRun && !options?.shouldRun(suite)) return;
+
+  const totalTests = suite.allTests().length;
+  if (!options.reportOnEmpty && totalTests === 0) {
+    if (!options.quiet) {
+      console.log("No tests found, skipping report (reportOnEmpty is false)");
+    }
+    return;
+  }
 
   // Clone the base adaptive card and table
   const adaptiveCard = structuredClone(BaseAdaptiveCard);
   const table = structuredClone(BaseTable);
 
   const totalStatus = getTotalStatus(suite.suites);
-  const totalTests = suite.allTests().length;
   const isSuccess = totalStatus.failed === 0;
 
   if (isSuccess && !options.notifyOnSuccess) {
@@ -86,6 +89,20 @@ export const processResults = async (
     })
   );
 
+  // Add duration if enabled
+  if (options.enableDuration && typeof durationMs === "number") {
+    const seconds = Math.round(durationMs / 1000);
+    const min = Math.floor(seconds / 60);
+    const sec = seconds % 60;
+    const durationStr = min > 0 ? `${min}m ${sec}s` : `${sec}s`;
+    table.rows.push(
+      createTableRow("Duration", durationStr, {
+        isSubtle: true,
+        weight: "Bolder",
+      })
+    );
+  }
+
   const container = {
     type: "Container",
     items: [
@@ -112,9 +129,13 @@ export const processResults = async (
   };
 
   // Check if we should ping on failure
+  let mentionEmails = options.mentionOnFailure;
+  if (options.mentionAuthors && gitAuthors && gitAuthors.length > 0) {
+    mentionEmails = gitAuthors.join(",");
+  }
   if (!isSuccess) {
     const mentionData = getMentions(
-      options.mentionOnFailure,
+      mentionEmails,
       options.mentionOnFailureText
     );
     if (mentionData?.message && mentionData.mentions.length > 0) {
